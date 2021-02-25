@@ -44,7 +44,7 @@ pipeline {
         stage('Prepare') {
             steps {
               sh script: 'apt-get update && apt-get install -y libusb-1.0-0-dev libudev-dev', label: 'Install linux dependencies'
-              sh 'ln -s .env.${BRANCH_NAME:dev} .env'
+              sh 'ln -s .env.${BRANCH_NAME:-dev} .env'
               sh 'yarn install'
               sh 'yarn lint'
             }
