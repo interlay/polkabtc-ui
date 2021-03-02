@@ -54,8 +54,7 @@ const ButtonComponent = (props: buttonProps): React.ReactElement => {
           }}
           className='external-link'
           src={iconExternalLink}
-          alt=''
-          id={`${props.buttonId}-arrow`} />
+          alt='external link' />
       </button>
     </Link>
   );

@@ -1,7 +1,23 @@
-$theme-colors: (
-  "info": #f7931a,
+$theme-colors: ("info": #f7931a,
   "danger": #e6007a,
 );
 
 /* import bootstrap to set changes */
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+.external-link-nav {
+  margin-left: 3px;
+  opacity: 0.5;
+}
+
+.nav-faucet-button {
+  font-family: airbnb-cereal-medium;
+  font-size: 1rem;
+  padding: 8px 20px;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.nav-bar-currency-margin {
+  margin-right: 3px;
+}
