@@ -13,8 +13,8 @@ import Balances from './balances';
 import { PAGES } from 'utils/constants/links';
 
 type TopbarProps = {
-    address?: string;
-    requestDOT: () => Promise<void>;
+  address?: string;
+  requestDOT: () => Promise<void>;
 };
 
 export default function Topbar(props: TopbarProps): ReactElement {
@@ -89,7 +89,7 @@ export default function Topbar(props: TopbarProps): ReactElement {
       expand='lg'
       className='border-bottom shadow-sm top-bar'>
       {!isLoading && (
-        <React.Fragment>
+        <>
           <Navbar.Brand>
             <Link
               id='main-logo'
@@ -157,49 +157,54 @@ export default function Topbar(props: TopbarProps): ReactElement {
               </a>
             </Nav>
             {props.address !== undefined && (
-              <React.Fragment>
-                <Nav className='d-inline'>
-                  <Button
-                    variant='outline-bitcoin'
-                    className='mr-2'
-                    style={{ borderRadius: '8px' }}
-                    size='sm'>
-                    <a
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      href='https://testnet-faucet.mempool.co/'
-                      style={{ textDecoration: 'none', color: '#000' }}>
-                      {t('request_btc')}
-                    </a>
-                  </Button>
-                  <ButtonMaybePending
-                    variant='outline-polkadot'
-                    className='mr-2'
-                    style={{ borderRadius: '8px' }}
-                    size='sm'
-                    isPending={isRequestPending}
-                    onClick={requestDOT}>
-                    {t('request_dot')}
-                  </ButtonMaybePending>
-                </Nav>
-                <Balances
-                  balanceDOT={balanceDOT}
-                  balancePolkaBTC={balancePolkaBTC} />
-                <Nav
-                  id='account-button'
-                  className='d-inline'>
-                  <Button
-                    variant='outline-polkadot'
-                    size='sm'
-                    style={{ borderRadius: '8px' }}
-                    onClick={() => dispatch(showAccountModalAction(true))}>
-                    {getLabel()}
-                  </Button>
-                </Nav>
-              </React.Fragment>
+              <>
+                {address === '' ? (
+                  <Nav
+                    id='account-button'
+                    className='d-inline'>
+                    <Button
+                      variant='outline-account'
+                      className='nav-faucet-button'
+                      onClick={() => dispatch(showAccountModalAction(true))}>
+                      {getLabel()}
+                    </Button>
+                  </Nav>
+                ) : (
+                  <>
+                    <Nav className='d-inline'>
+                      <a
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        href='https://testnet-faucet.mempool.co/'>
+                        <Button className='nav-faucet-button bitcoin-outline'>{t('request_btc')}</Button>
+                      </a>
+                      <ButtonMaybePending
+                        variant='outline-polkadot'
+                        className='nav-faucet-button'
+                        isPending={isRequestPending}
+                        onClick={requestDOT}>
+                        {t('request_dot')}
+                      </ButtonMaybePending>
+                    </Nav>
+                    <Balances
+                      balanceDOT={balanceDOT}
+                      balancePolkaBTC={balancePolkaBTC} />
+                    <Nav
+                      id='account-button'
+                      className='d-inline'>
+                      <Button
+                        variant='outline-account'
+                        className='nav-faucet-button'
+                        onClick={() => dispatch(showAccountModalAction(true))}>
+                        {getLabel()}
+                      </Button>
+                    </Nav>
+                  </>
+                )}
+              </>
             )}
           </Navbar.Collapse>
-        </React.Fragment>
+        </>
       )}
     </Navbar>
   );
