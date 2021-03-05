@@ -191,7 +191,11 @@ export default function StatusView(props: StatusViewProps): ReactElement {
         props.request.status !== IssueRequestStatus.Cancelled && (
         <React.Fragment>
           <div className='status-title'>
-            {props.request.confirmations < stableBitcoinConfirmations ? t('received') : t('confirmed')}
+            {props.request.confirmations < stableBitcoinConfirmations ? t('received') : (
+              <div className='pending-text bold-text'>
+                {t('waiting_for_confirmations')}
+              </div>
+            )}
           </div>
           <div className='row'>
             <div className='col'>
@@ -223,11 +227,6 @@ export default function StatusView(props: StatusViewProps): ReactElement {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <div className='row'>
-                    <div className='col text-center'>
-                      <div className='fas fa-check-circle confirmed-tick'></div>
-                    </div>
-                  </div>
                   <div className='row btc-transaction-wrapper'>
                     <div className='col'>
                       <div className='btc-transaction-view'>
@@ -237,7 +236,7 @@ export default function StatusView(props: StatusViewProps): ReactElement {
                   </div>
                   <div className='row'>
                     <div className='col'>
-                      <div className='btc-transaction-view'>
+                      <div className='btc-transaction-view bold-text'>
                         {shortAddress(props.request.btcTxId)}
                       </div>
                     </div>
@@ -260,7 +259,7 @@ export default function StatusView(props: StatusViewProps): ReactElement {
                     </div>
                   </div>
                   <div className='row mt-5 justify-content-center'>
-                    <div className='col-10'>{t('issue_page.receive_polkabtc_tokens')}</div>
+                    <div className='col-10 text-center'>{t('issue_page.receive_polkabtc_tokens')}</div>
                   </div>
                   <div className='row mt-3 justify-content-center'>
                     <div className='col-6 text-center'>
