@@ -49,7 +49,7 @@ export default function IssueDashboard(): ReactElement {
         tableParams.perPage,
         tableParams.sortBy,
         tableParams.sortAsc,
-                constants.BITCOIN_NETWORK as BtcNetworkName // not sure why cast is necessary here, but TS complains
+        constants.BITCOIN_NETWORK as BtcNetworkName // not sure why cast is necessary here, but TS complains
       );
       setIssueRequests(res.data);
     },
@@ -144,19 +144,19 @@ export default function IssueDashboard(): ReactElement {
                 <TimerIncrement></TimerIncrement>
               </p>
               <div
-                style={{ backgroundColor: getAccents('d_yellow').color }}
+                style={{ backgroundColor: getAccents('d_pink').color }}
                 className='title-line'>
               </div>
             </div>
             <div className='table-top-data-container'>
               <div className='values-container'>
                 <div>
-                  <h2 style={{ color: getAccents('d_yellow').color }}>
+                  <h2 style={{ color: getAccents('d_pink').color }}>
                     {t('dashboard.issue.issued')}
                   </h2>
                   <h1>{t('dashboard.issue.total_polkabtc', { amount: totalPolkaBTC })}</h1>
                   <h1 className='h1-price-opacity'>
-                                        ${(prices.bitcoin.usd * parseFloat(totalPolkaBTC)).toLocaleString()}
+                    ${(prices.bitcoin.usd * parseFloat(totalPolkaBTC)).toLocaleString()}
                   </h1>
                 </div>
                 <div>
@@ -169,7 +169,7 @@ export default function IssueDashboard(): ReactElement {
               <div className='card'>
                 <div className='chart-container'>
                   <LineChartComponent
-                    color={['d_yellow', 'd_grey']}
+                    color={['d_pink', 'd_grey']}
                     label={[
                       t('dashboard.issue.total_issued_chart'),
                       t('dashboard.issue.perday_issued_chart')
