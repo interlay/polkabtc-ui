@@ -45,7 +45,7 @@ import ApplicationPage from 'pages/app/app.page';
 import DashboardPage from 'pages/dashboard/dashboard.page';
 import VaultDashboardPage from 'pages/vault-dashboard/vault-dashboard.page';
 import StakedRelayerPage from 'pages/staked-relayer/staked-relayer.page';
-import ChallengesPage from 'pages/leaderboard/leaderboard.page';
+import Challenges from 'pages/Challenges';
 import VaultsDashboard from 'pages/dashboard/vaults/vaults.dashboard.page';
 import IssueDashboard from 'pages/dashboard/issue/issue.dashboard.page';
 import RedeemDashboard from 'pages/dashboard/redeem/redeem.dashboard.page';
@@ -375,7 +375,7 @@ function App(): ReactElement {
                       <VaultsDashboard />
                     </Route>
                     <Route path={PAGES.CHALLENGES}>
-                      <ChallengesPage />
+                      <Challenges />
                     </Route>
                     <Route path={PAGES.PARACHAIN}>
                       <ParachainDashboard />

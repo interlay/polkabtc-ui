@@ -1,19 +1,30 @@
-import { useState, useEffect, ReactElement, useMemo } from 'react';
+
+import {
+  useState,
+  useEffect,
+  ReactElement,
+  useMemo
+} from 'react';
 import { useSelector } from 'react-redux';
-import { Image } from 'react-bootstrap';
-import 'pages/leaderboard/leaderboard.page.scss';
-import 'pages/dashboard/dashboard-subpage.scss';
-import { StoreType } from 'common/types/util.types';
+import {
+  Image,
+  Card,
+  Tab,
+  Tabs
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { RelayerData, VaultData } from '@interlay/polkabtc-stats';
+
+import MainContainer from 'parts/MainContainer';
+import { StoreType } from 'common/types/util.types';
 import DashboardTable from 'common/components/dashboard-table/dashboard-table';
 import usePolkabtcStats from 'common/hooks/use-polkabtc-stats';
-import { RelayerData, VaultData } from '@interlay/polkabtc-stats';
 import TimerIncrement from 'common/components/timer-increment';
-import { Card, Tab, Tabs } from 'react-bootstrap';
-import newImg from '../../assets/img/icons/new.png';
-import MainContainer from 'parts/MainContainer';
+import newImg from 'assets/img/icons/new.png';
+import 'pages/dashboard/dashboard-subpage.scss';
+import './challenges.scss';
 
-export default function ChallengesPage(): ReactElement {
+function Challenges(): ReactElement {
   // eslint-disable-next-line no-array-constructor
   const [vaultRows, setVaultRows] = useState(new Array<VaultData>());
   // eslint-disable-next-line no-array-constructor
@@ -46,7 +57,7 @@ export default function ChallengesPage(): ReactElement {
       <p>{row.execute_redeem_count}</p>,
       <p>{Number(row.lifetime_sla).toFixed(2)}</p>
       // lifetime_sla is a string despite schema being "number"
-      // TODO: check how Axios/openapigenerator handle typings, and if necessary
+      // TODO: check how Axios/openapi-generator handle typings, and if necessary
       // convert stats API data types to `string` to avoid confusion
     ],
     []
@@ -63,7 +74,10 @@ export default function ChallengesPage(): ReactElement {
   // - exclude Interlay owned relayers
   // - sort relayers with highest lifetime sla
   const tableRelayerRow = useMemo(
-    () => (row: RelayerData): ReactElement[] => [<p>{row.id}</p>, <p>{row.stake} DOT</p>, <p>{row.block_count}</p>,
+    () => (row: RelayerData): ReactElement[] => [
+      <p>{row.id}</p>,
+      <p>{row.stake} DOT</p>,
+      <p>{row.block_count}</p>,
       <p>{Number(row.lifetime_sla).toFixed(2)}</p>
     ],
     []
@@ -75,11 +89,13 @@ export default function ChallengesPage(): ReactElement {
       const vaults = (await statsApi.getVaults()).data;
       setVaultRows(vaults.sort((a, b) => b.lifetime_sla - a.lifetime_sla));
     };
+
     const fetchRelayerData = async () => {
       if (!polkaBtcLoaded) return;
       const relayers = (await statsApi.getRelayers()).data;
       setRelayerRows(relayers.sort((a, b) => b.lifetime_sla - a.lifetime_sla));
     };
+
     fetchVaultData();
     fetchRelayerData();
   }, [polkaBtcLoaded, statsApi, t]);
@@ -202,3 +218,5 @@ export default function ChallengesPage(): ReactElement {
     </MainContainer>
   );
 }
+
+export default Challenges;
