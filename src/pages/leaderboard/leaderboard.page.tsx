@@ -11,6 +11,7 @@ import { RelayerData, VaultData } from '@interlay/polkabtc-stats';
 import TimerIncrement from 'common/components/timer-increment';
 import { Card, Tab, Tabs } from 'react-bootstrap';
 import newImg from '../../assets/img/icons/new.png';
+import MainContainer from 'parts/MainContainer';
 
 export default function ChallengesPage(): ReactElement {
   // eslint-disable-next-line no-array-constructor
@@ -84,7 +85,7 @@ export default function ChallengesPage(): ReactElement {
   }, [polkaBtcLoaded, statsApi, t]);
 
   return (
-    <div className='main-container'>
+    <MainContainer>
       <div className='dashboard-container dashboard-fade-in-animation dashboard-min-height'>
         <div className='dashboard-wrapper'>
           <div className='title-container'>
@@ -198,6 +199,6 @@ export default function ChallengesPage(): ReactElement {
           </Tabs>
         </div>
       </div>
-    </div>
+    </MainContainer>
   );
 }
