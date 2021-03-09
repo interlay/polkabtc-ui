@@ -179,7 +179,7 @@ function Challenges(): ReactElement {
             <Tab
               eventKey='vaults'
               title={t('leaderboard.vault_scores')}>
-              <div className='dashboard-table-container'>
+              <div style={{ margin: '40px 0px' }}>
                 <DashboardTable
                   pageData={vaultRows}
                   headings={vaultTableHeadings}
@@ -190,7 +190,7 @@ function Challenges(): ReactElement {
             <Tab
               eventKey='relayers'
               title={t('leaderboard.relayer_scores')}>
-              <div className='dashboard-table-container'>
+              <div style={{ margin: '40px 0px' }}>
                 <DashboardTable
                   pageData={relayerRows}
                   headings={relayerTableHeadings}
