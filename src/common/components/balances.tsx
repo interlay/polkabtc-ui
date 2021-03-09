@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react';
-import PolkaBitcoin from 'assets/img/PolkaBitcoin-logo.png';
-import PolkadotLogo from 'assets/img/small-polkadot-logo.png';
+import { ReactElement } from 'react';
+import PolkaBitcoin from '../../assets/img/PolkaBitcoin-logo.png';
+import PolkadotLogo from '../../assets/img/small-polkadot-logo.png';
 type BalancesProps = {
   balancePolkaBTC?: string;
   balanceDOT?: string;
