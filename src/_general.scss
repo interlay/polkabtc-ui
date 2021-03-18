@@ -1,52 +1,52 @@
-@import "custom";
-@import "mixins";
-@import "variables";
+@import 'custom';
+@import 'mixins';
+@import 'variables';
 
 // RE: https://drafts.csswg.org/css-fonts/#font-weight-numeric-values
 // TODO: should set up based on https://css-tricks.com/snippets/css/using-font-face/
 // TODO: should follow https://tailwindcss.com/docs/adding-base-styles#font-face-rules and https://tailwindcss.com/docs/adding-base-styles#using-classes-in-your-html
 // TODO: should follow https://tailwindcss.com/docs/font-family
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealLight.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealLight.ttf') format('truetype');
   font-weight: 300; // light
   font-style: normal;
 }
 
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealBook.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealBook.ttf') format('truetype');
   // TODO: should double-check as `book` is not a standard term
   font-weight: 400; // book
   font-style: normal;
 }
 
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealMedium.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealMedium.ttf') format('truetype');
   font-weight: 500; // medium
   font-style: normal;
 }
 
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealBold.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealBold.ttf') format('truetype');
   font-weight: 700; // bold
   font-style: normal;
 }
 
 // TODO: unused for now
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealExtraBold.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealExtraBold.ttf') format('truetype');
   font-weight: 800; // extra bold
   font-style: normal;
 }
 
 // TODO: unused for now
 @font-face {
-  font-family: "airbnb-cereal";
-  src: url("./assets/fonts/airbnb-cereal/AirbnbCerealExtraBold.ttf") format("truetype");
+  font-family: 'airbnb-cereal';
+  src: url('./assets/fonts/airbnb-cereal/AirbnbCerealExtraBold.ttf') format('truetype');
   font-weight: 900; // black
   font-style: normal;
 }
@@ -66,7 +66,7 @@ td,
 th,
 li,
 ul {
-  font-family: "airbnb-cereal", Arial;
+  font-family: 'airbnb-cereal', Arial;
 }
 
 .header {
@@ -156,7 +156,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -188,7 +188,7 @@ input[type="number"] {
 
 .btn-outline-dark:not(:disabled):not(.disabled):active,
 .btn-outline-dark:not(:disabled):not(.disabled).active,
-.show>.btn-outline-polkadot.dropdown-toggle {
+.show > .btn-outline-polkadot.dropdown-toggle {
   color: #000000;
   background-color: #ed3855;
   border-color: #ed3855;
@@ -196,7 +196,7 @@ input[type="number"] {
 
 .btn-outline-dark:not(:disabled):not(.disabled):active:focus,
 .btn-outline-dark:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-dark.dropdown-toggle:focus {
+.show > .btn-outline-dark.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }
 
@@ -224,7 +224,7 @@ input[type="number"] {
 
 .btn-outline-polkadot:not(:disabled):not(.disabled):active,
 .btn-outline-polkadot:not(:disabled):not(.disabled).active,
-.show>.btn-outline-polkadot.dropdown-toggle {
+.show > .btn-outline-polkadot.dropdown-toggle {
   color: #000000;
   background-color: #ed3855;
   border-color: #ed3855;
@@ -232,7 +232,7 @@ input[type="number"] {
 
 .btn-outline-polkadot:not(:disabled):not(.disabled):active:focus,
 .btn-outline-polkadot:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-polkadot.dropdown-toggle:focus {
+.show > .btn-outline-polkadot.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }
 
@@ -260,7 +260,7 @@ input[type="number"] {
 
 .btn-outline-danger:not(:disabled):not(.disabled):active,
 .btn-outline-danger:not(:disabled):not(.disabled).active,
-.show>.btn-outline-danger.dropdown-toggle {
+.show > .btn-outline-danger.dropdown-toggle {
   color: #fff;
   background-color: #c71c22;
   border-color: #c71c22;
@@ -268,7 +268,7 @@ input[type="number"] {
 
 .btn-outline-danger:not(:disabled):not(.disabled):active:focus,
 .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-danger.dropdown-toggle:focus {
+.show > .btn-outline-danger.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(199, 28, 34, 0.5);
 }
 
@@ -414,7 +414,7 @@ input[type="number"] {
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
-.show>.btn-primary.dropdown-toggle {
+.show > .btn-primary.dropdown-toggle {
   color: #fff;
   background-color: #1f0000;
   border-color: #120000;
@@ -422,7 +422,7 @@ input[type="number"] {
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
-.show>.btn-primary.dropdown-toggle:focus {
+.show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(107, 39, 39, 0.5);
 }
 
@@ -452,7 +452,7 @@ input[type="number"] {
 
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #212529;
   background-color: #e6e6e6;
   border-color: #dfdfdf;
@@ -460,7 +460,7 @@ input[type="number"] {
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
-.show>.btn-secondary.dropdown-toggle:focus {
+.show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
 }
 
@@ -490,7 +490,7 @@ input[type="number"] {
 
 .btn-success:not(:disabled):not(.disabled):active,
 .btn-success:not(:disabled):not(.disabled).active,
-.show>.btn-success.dropdown-toggle {
+.show > .btn-success.dropdown-toggle {
   color: #fff;
   background-color: #59822c;
   border-color: #527829;
@@ -498,7 +498,7 @@ input[type="number"] {
 
 .btn-success:not(:disabled):not(.disabled):active:focus,
 .btn-success:not(:disabled):not(.disabled).active:focus,
-.show>.btn-success.dropdown-toggle:focus {
+.show > .btn-success.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(136, 181, 87, 0.5);
 }
 
@@ -576,13 +576,6 @@ input[type="number"] {
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
-  font-weight: 400;
-}
-
-.stats {
-  width: 100%;
-  text-align: center;
-  font-size: 2.2rem;
   font-weight: 400;
 }
 
@@ -674,9 +667,31 @@ input[type="number"] {
 .medium-text {
   font-weight: 500;
 }
-
+.stats-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+}
 .stats-card {
-  padding: 0px !important;
+  background-color: #f3f3f3;
+  padding: 30px 80px;
+  border-radius: 8px;
+}
+.stats-title {
+  font-family: airbnb-cereal-bold;
+  opacity: 0.4;
+}
+.stats {
+  padding-top: 2px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: airbnb-cereal-bold;
+}
+
+.vault-btn {
+  font-family: airbnb-cereal-bold;
 }
 
 // TODO: should be scoped
@@ -690,7 +705,7 @@ input[type="number"] {
 
 .btn-outline-account {
   color: #000;
-  background-color: #EBEBEB;
+  background-color: #ebebeb;
   border: none;
 }
 
@@ -701,8 +716,8 @@ input[type="number"] {
 
 .btn-outline-account-not-connected:hover {
   color: #000;
-  background-color: #EBEBEB;
-  border: #EBEBEB;
+  background-color: #ebebeb;
+  border: #ebebeb;
 }
 
 .btn-outline-bitcoin {
@@ -729,7 +744,7 @@ input[type="number"] {
 
 .btn-outline-bitcoin:not(:disabled):not(.disabled):active,
 .btn-outline-bitcoin:not(:disabled):not(.disabled).active,
-.show>.btn-outline-bitcoin.dropdown-toggle {
+.show > .btn-outline-bitcoin.dropdown-toggle {
   color: #000000;
   background-color: #ff9900;
   border-color: #ff9900;
@@ -737,6 +752,6 @@ input[type="number"] {
 
 .btn-outline-bitcoin:not(:disabled):not(.disabled):active:focus,
 .btn-outline-bitcoin:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-bitcoin.dropdown-toggle:focus {
+.show > .btn-outline-bitcoin.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }

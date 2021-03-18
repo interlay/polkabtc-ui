@@ -15,6 +15,8 @@ import { safeRoundTwoDecimals } from '../../common/utils/utils';
 import TimerIncrement from '../../common/components/timer-increment';
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
+import { getAccents } from '../dashboard/dashboard-colors';
+
 // TODO: should fix by scoping only necessary CSS into a component
 import '../dashboard/dashboard-subpage.scss';
 import { ACCOUNT_ID_TYPE_NAME } from '../../constants';
@@ -56,9 +58,7 @@ export default function StakedRelayerPage(): ReactElement {
         setRelayerInactive(isInactive);
         setStakedRelayerAddress(address);
 
-        const lockedPlanck = (
-          await window.polkaBTC.stakedRelayer.getStakedDOTAmount(stakedRelayerId)
-        ).toString();
+        const lockedPlanck = (await window.polkaBTC.stakedRelayer.getStakedDOTAmount(stakedRelayerId)).toString();
         const lockedDOT = planckToDOT(lockedPlanck);
 
         const slaScore = await window.polkaBTC.stakedRelayer.getSLA(stakedRelayerId);
@@ -67,9 +67,7 @@ export default function StakedRelayerPage(): ReactElement {
         const apyScore = await window.polkaBTC.stakedRelayer.getAPY(stakedRelayerId);
         setAPY(apyScore);
 
-        const feesPolkaSAT = await window.polkaBTC.stakedRelayer.getFeesPolkaBTC(
-          stakedRelayerId
-        );
+        const feesPolkaSAT = await window.polkaBTC.stakedRelayer.getFeesPolkaBTC(stakedRelayerId);
         setFeesEarnedPolkaBTC(satToBTC(feesPolkaSAT));
 
         const feesPlanck = await window.polkaBTC.stakedRelayer.getFeesDOT(stakedRelayerId);
@@ -113,30 +111,38 @@ export default function StakedRelayerPage(): ReactElement {
                     <span className='stats'>{feesEarnedPolkaBTC}</span> PolkaBTC
                   </div>
                 </div>
-                <div className='col-lg-3'>
-                  <div
-                    className='card stats-card mb-3'
-                    style={{ minHeight: '100px' }}>
-                    <div>{t('fees_earned')}</div>
-                    <span className='stats'>{feesEarnedDOT}</span> DOT
-                  </div>
+              </div>
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div className='stats-title'>{t('fees_earned')}</div>
+                <div
+                  className='stats'
+                  style={{ color: getAccents('d_pink').color }}>
+                  {feesEarnedPolkaBTC} PolkaBTC
                 </div>
-                <div className='col-lg-3'>
-                  <div
-                    className='card stats-card mb-3'
-                    style={{ minHeight: '100px' }}>
-                    <div>{t('sla_score')}</div>
-                    <span className='stats'>{safeRoundTwoDecimals(sla)}</span>
-                  </div>
+              </div>
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div className='stats-title'>{t('fees_earned')}</div>
+                <div
+                  className='stats'
+                  style={{ color: getAccents('d_pink').color }}>
+                  {feesEarnedDOT} DOT
                 </div>
-                <div className='col-lg-3'>
-                  <div
-                    className='card stats-card mb-3'
-                    style={{ minHeight: '100px' }}>
-                    <div>{t('apy')}</div>
-                    <span className='stats'>~{safeRoundTwoDecimals(apy)}</span> %
-                  </div>
-                </div>
+              </div>
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div className='stats-title'>{t('sla_score')}</div>
+                <span className='stats'>{safeRoundTwoDecimals(sla)}</span>
+              </div>
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div className='stats-title'>{t('apy')}</div>
+                <span className='stats'>~{safeRoundTwoDecimals(apy)} %</span>
               </div>
             </div>
           )}
