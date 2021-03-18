@@ -6,7 +6,6 @@ import { StatusUpdate } from '../../types/util.types';
 import MessageModal from '../../../pages/staked-relayer/message-modal/message-modal';
 import BitcoinBlockHash from '../bitcoin-links/block-hash';
 import { reverseHashEndianness } from '../../utils/utils';
-import * as constants from '../../../constants';
 import { useTranslation } from 'react-i18next';
 
 const ADD_DATA_ERROR = 'Add NO_DATA error';
@@ -55,6 +54,7 @@ export default function StatusUpdateTable(props: StatusUpdateTableProps): ReactE
     const fetchStatus = async () => {
       if (!polkaBtcLoaded) return;
 
+      // TODO: replace with state item
       const result = await window.polkaBTC.stakedRelayer.getCurrentStateOfBTCParachain();
       setStatus(result.isRunning ? 'Running' : result.isError ? 'Error' : 'Shutdown');
     };
@@ -94,11 +94,6 @@ export default function StatusUpdateTable(props: StatusUpdateTableProps): ReactE
 
     fetchStatus();
     fetchUpdates();
-    const interval = setInterval(() => {
-      fetchStatus();
-      fetchUpdates();
-    }, constants.COMPONENT_UPDATE_MS);
-    return () => clearInterval(interval);
   }, [polkaBtcLoaded, props.stakedRelayerAddress, props.readOnly]);
 
   const openMessageModal = (statusUpdate: StatusUpdate) => {
@@ -150,7 +145,7 @@ export default function StatusUpdateTable(props: StatusUpdateTableProps): ReactE
       <div>
         <p
           style={{
-            fontFamily: 'airbnb-cereal-bold',
+            fontWeight: 700,
             fontSize: '26px'
           }}>
           {t('dashboard.parachain.parachain')}
