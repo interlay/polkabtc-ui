@@ -452,11 +452,7 @@
     "block_count": "Blocks Submitted",
     "lifetime_sla": "Lifetime SLA Score",
     "more_info": "More info",
-    "challenge_buttons": [
-      "Challenges 2 & 3",
-      "Challenge 4",
-      "All-time"
-    ],
+    "challenge_buttons": ["Challenges 2 & 3", "Challenge 4", "All-time"],
     "challenges": {
       "treasure_hunt": "Challenge 1: Treasure Hunt",
       "treasure_hunt_desc": "Issue & redeem to claim reward.",
@@ -519,5 +515,28 @@
   },
   "testnet": {
     "warning": "Notice: All assets in the beta testnet are for testing purposes only and have no real value."
+  },
+  "footer": {
+    "contact": "Contact",
+    "challenges": "Challenges",
+    "treasure_hunt": "Treasure Hunt",
+    "vault_treasure": "Vault treasure",
+    "relayer_treasure": "Relayer Treasure",
+    "king_of_the_hill": "King of the hill",
+    "lottery": "Lottery",
+    "feedback": "Feedback",
+    "user_feedback": "User feedback",
+    "vault_feedback": "Vault feedback",
+    "relayer_feedback": "Relayer feedback",
+    "open_issue": "Open an issue on Github",
+    "discuss_discord": "Discuss on Discord",
+    "docs": "Docs",
+    "getting_started": "Getting Started",
+    "vaults_docs": "Vaults",
+    "Relayer_docs": "Relayers",
+    "developers": "Developers",
+    "roadmap": "Roadmap",
+    "follow_us": "Follow us on",
+    "newsletter": "Newsletter"
   }
 }

@@ -1,5 +1,5 @@
-@import "../../variables";
-@import "../../mixins";
+@import '../../variables';
+@import '../../mixins';
 
 .dashboard-items-container {
   text-align: center;
@@ -146,7 +146,7 @@
 }
 
 .bold-font {
-  font-family: "airbnb-cereal-bold";
+  font-family: 'airbnb-cereal-bold';
 }
 
 @media only screen and (min-width: $mobile-large-size) {
@@ -164,7 +164,7 @@
   .dashboard-items-container {
     @include justifyCenter();
   }
-  
+
   .row-grid {
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 40px;
@@ -176,20 +176,20 @@
     padding: 30px 20px;
     // box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0);
     h1 {
-        font-size: 16px;
-        margin-bottom: 0.5rem;
+      font-size: 16px;
+      margin-bottom: 0.5rem;
     }
     h3 {
-        font-size: 10px;
-        letter-spacing: 0.6px;
+      font-size: 10px;
+      letter-spacing: 0.6px;
     }
     .parachain-content-container {
-        width: 70%;
-        padding-left: 30px;
+      width: 70%;
+      padding-left: 30px;
     }
     button {
-        width: 160px;
-        padding: 12px 12px;
+      width: 160px;
+      padding: 12px 12px;
     }
   }
   // .card:hover {
@@ -217,7 +217,7 @@
   }
 
   button {
-    width: 160px;
+    width: auto;
     padding: 12px 12px;
   }
 

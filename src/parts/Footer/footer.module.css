@@ -1,25 +1,85 @@
-
 .footer {
+  padding: 50px;
+  background-color: #f8f9fa;
+  display: flex;
+  text-align: center;
+  justify-content: stretch;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 0.5fr repeat(5, 1fr);
+  column-gap: 20px;
+  width: 100%;
+}
+
+.title {
+  font-family: airbnb-cereal-bold;
+  font-size: 16px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.footer-items-container ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-items-container li {
+  text-align: left;
+  font-size: 16px;
+  padding: 6px 0px;
+}
+.center-container {
+  display: flex;
+  justify-content: center;
+}
+.left-padding-for-image {
+  padding-top: 50px;
+}
+.logos-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 32px 12px;
-  /* TODO: should not hard-code typography */
-  font-size: 0.8rem;
+  padding-right: 50px;
+  padding-top: 20px;
 }
-
-.footer-row:not(:first-child) {
-  margin-top: 12px;
+.newsletter-input {
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 6px 10px;
 }
-
-.first-row > *:not(:first-child) {
-  margin-left: 24px;
+::placeholder {
+  font-family: airbnb-cereal-book;
 }
-
-.second-row > *:not(:first-child) {
-  margin-left: 8px;
+.newsletter-container {
+  display: flex;
+  flex-direction: row;
 }
-
-.third-row > *:not(:first-child) {
-  margin-left: 32px;
+.signup-container {
+  display: flex;
+}
+.newsletter-button {
+  width: 120px;
+  padding: 10px 10px;
+  font-family: airbnb-cereal-bold;
+  font-size: 14px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  border: 1px solid #4ac948;
+  color: #4ac948;
+  margin-left: 10px;
+}
+.newsletter-button:hover {
+  color: white;
+  background-color: #4ac948;
+  border: 1px solid #4ac948;
+}
+.signup-text-container {
+  margin-top: 3px;
+}
+.rights-container {
+  margin-top: 10px;
+  font-family: airbnb-cereal-bold;
 }

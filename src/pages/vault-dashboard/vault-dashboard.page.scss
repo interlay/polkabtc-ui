@@ -1,127 +1,143 @@
-@import "../../variables";
-@import "../../mixins";
+@import '../../variables';
+@import '../../mixins';
 
 .vault-dashboard-page {
+  text-align: center;
+  @include justifyCenter();
+
+  .vault-container {
+    width: 90%;
+    max-width: 1600px;
+    overflow-x: scroll;
+    padding: 0px 15px;
+  }
+
+  .vault-dashboard-buttons-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 20px;
+    margin-bottom: 20px;
+  }
+  .vault-dashboard-buttons-container > :first-child {
+    display: flex;
+    justify-content: end;
+  }
+  .vault-dashboard-buttons-container > :last-child {
+    display: flex;
+    justify-content: start;
+  }
+
+  .register-vault-dashboard {
+    margin: 1rem;
+  }
+
+  .btc-address-header {
+    margin-top: 1rem;
+  }
+
+  .vault-dashboard-button {
+    margin: 2rem;
+  }
+
+  .title {
+    width: 100%;
     text-align: center;
-    @include justifyCenter();
+    font-size: 2rem;
+    margin-top: 2rem;
+    font-weight: 600;
+  }
 
-    .vault-container {
-        width: 70%;
-        overflow-x: scroll;
-        padding: 0px 15px;
+  .header {
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .table-wrapper {
+    width: 100%;
+    table {
+      table-layout: auto;
+      width: 1200px;
+      margin: auto;
+      overflow: scroll;
+      text-align: center;
     }
 
-    .register-vault-dashboard {
-        margin: 1rem;
+    th,
+    td {
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+
+      i {
+        color: rgba(0, 0, 0, 0.5);
+      }
+      p {
+        margin: 0px;
+      }
     }
 
-    .btc-address-header {
-        margin-top: 1rem;
+    td.break-words {
+      word-break: break-all;
     }
 
-    .vault-dashboard-button {
-        margin: 2rem;
+    thead {
+      background-color: #eaeaea;
     }
+  }
 
-    .title {
-        width: 100%;
-        text-align: center;
-        font-size: 2rem;
-        margin-top: 2rem;
-        font-weight: 600;
+  .stats .fa-edit {
+    &:hover {
+      cursor: pointer;
     }
-
-    .header {
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-align: center;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .table-wrapper {
-        width: 100%;
-        table {
-            table-layout: auto;
-            width: 1200px;
-            margin: auto;
-            overflow: scroll;
-            text-align: center;
-        }
-
-        th,
-        td {
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-
-            i {
-                color: rgba(0, 0, 0, 0.5);
-            }
-            p {
-                margin: 0px;
-            }
-        }
-
-        td.break-words {
-            word-break: break-all;
-        }
-
-        thead {
-            background-color: #eaeaea;
-        }
-    }
-
-    .stats .fa-edit {
-        &:hover {
-            cursor: pointer;
-        }
-    }
+  }
 }
 
 .request-header {
-    text-align: center;
-    margin-bottom: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .vault-empty-space {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .btc-address {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .current-collateral {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .replace-table {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 .basic-addon {
-    .input-error {
-        margin-top: 0.1rem;
-    }
+  .input-error {
+    margin-top: 0.1rem;
+  }
 }
 
 .dashboard-fade-in-animation {
-    animation: dashboard-fade 0.5s ease-in;
+  animation: dashboard-fade 0.5s ease-in;
 }
 
 @keyframes dashboard-fade {
-    0% {
-        opacity: 0;
-    }
-    20% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .dashboard-min-height {
-    min-height: 100vh;
+  min-height: 100vh;
 }

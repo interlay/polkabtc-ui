@@ -1,12 +1,12 @@
-@import "custom";
-@import "mixins";
-@import "variables";
+@import 'custom';
+@import 'mixins';
+@import 'variables';
 
-@include font-fam("airbnb-cereal-light", "./assets/fonts/airbnb-cereal/AirbnbCerealLight");
-@include font-fam("airbnb-cereal-bold", "./assets/fonts/airbnb-cereal/AirbnbCerealBold");
-@include font-fam("airbnb-cereal-book", "./assets/fonts/airbnb-cereal/AirbnbCerealBook");
-@include font-fam("airbnb-cereal-black", "./assets/fonts/airbnb-cereal/AirbnbCerealBlack");
-@include font-fam("airbnb-cereal-medium", "./assets/fonts/airbnb-cereal/AirbnbCerealMedium");
+@include font-fam('airbnb-cereal-light', './assets/fonts/airbnb-cereal/AirbnbCerealLight');
+@include font-fam('airbnb-cereal-bold', './assets/fonts/airbnb-cereal/AirbnbCerealBold');
+@include font-fam('airbnb-cereal-book', './assets/fonts/airbnb-cereal/AirbnbCerealBook');
+@include font-fam('airbnb-cereal-black', './assets/fonts/airbnb-cereal/AirbnbCerealBlack');
+@include font-fam('airbnb-cereal-medium', './assets/fonts/airbnb-cereal/AirbnbCerealMedium');
 
 html,
 body,
@@ -129,7 +129,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
@@ -161,7 +161,7 @@ input[type="number"] {
 
 .btn-outline-dark:not(:disabled):not(.disabled):active,
 .btn-outline-dark:not(:disabled):not(.disabled).active,
-.show>.btn-outline-polkadot.dropdown-toggle {
+.show > .btn-outline-polkadot.dropdown-toggle {
   color: #000000;
   background-color: #ed3855;
   border-color: #ed3855;
@@ -169,7 +169,7 @@ input[type="number"] {
 
 .btn-outline-dark:not(:disabled):not(.disabled):active:focus,
 .btn-outline-dark:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-dark.dropdown-toggle:focus {
+.show > .btn-outline-dark.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }
 
@@ -197,7 +197,7 @@ input[type="number"] {
 
 .btn-outline-polkadot:not(:disabled):not(.disabled):active,
 .btn-outline-polkadot:not(:disabled):not(.disabled).active,
-.show>.btn-outline-polkadot.dropdown-toggle {
+.show > .btn-outline-polkadot.dropdown-toggle {
   color: #000000;
   background-color: #ed3855;
   border-color: #ed3855;
@@ -205,7 +205,7 @@ input[type="number"] {
 
 .btn-outline-polkadot:not(:disabled):not(.disabled):active:focus,
 .btn-outline-polkadot:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-polkadot.dropdown-toggle:focus {
+.show > .btn-outline-polkadot.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }
 
@@ -233,7 +233,7 @@ input[type="number"] {
 
 .btn-outline-danger:not(:disabled):not(.disabled):active,
 .btn-outline-danger:not(:disabled):not(.disabled).active,
-.show>.btn-outline-danger.dropdown-toggle {
+.show > .btn-outline-danger.dropdown-toggle {
   color: #fff;
   background-color: #c71c22;
   border-color: #c71c22;
@@ -241,7 +241,7 @@ input[type="number"] {
 
 .btn-outline-danger:not(:disabled):not(.disabled):active:focus,
 .btn-outline-danger:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-danger.dropdown-toggle:focus {
+.show > .btn-outline-danger.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(199, 28, 34, 0.5);
 }
 
@@ -413,7 +413,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
-.show>.btn-primary.dropdown-toggle {
+.show > .btn-primary.dropdown-toggle {
   color: #fff;
   background-color: #1f0000;
   border-color: #120000;
@@ -421,7 +421,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
-.show>.btn-primary.dropdown-toggle:focus {
+.show > .btn-primary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(107, 39, 39, 0.5);
 }
 
@@ -451,7 +451,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #212529;
   background-color: #e6e6e6;
   border-color: #dfdfdf;
@@ -459,7 +459,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
-.show>.btn-secondary.dropdown-toggle:focus {
+.show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(222, 222, 223, 0.5);
 }
 
@@ -489,7 +489,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-success:not(:disabled):not(.disabled):active,
 .btn-success:not(:disabled):not(.disabled).active,
-.show>.btn-success.dropdown-toggle {
+.show > .btn-success.dropdown-toggle {
   color: #fff;
   background-color: #59822c;
   border-color: #527829;
@@ -497,7 +497,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-success:not(:disabled):not(.disabled):active:focus,
 .btn-success:not(:disabled):not(.disabled).active:focus,
-.show>.btn-success.dropdown-toggle:focus {
+.show > .btn-success.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(136, 181, 87, 0.5);
 }
 
@@ -575,13 +575,6 @@ a:not([href]):not([tabindex]):focus {
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
-  font-weight: 400;
-}
-
-.stats {
-  width: 100%;
-  text-align: center;
-  font-size: 2.2rem;
   font-weight: 400;
 }
 
@@ -673,9 +666,31 @@ a:not([href]):not([tabindex]):focus {
 .medium-text {
   font-family: airbnb-cereal-medium;
 }
-
+.stats-grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+}
 .stats-card {
-  padding: 0px !important;
+  background-color: #f3f3f3;
+  padding: 30px 80px;
+  border-radius: 8px;
+}
+.stats-title {
+  font-family: airbnb-cereal-bold;
+  opacity: 0.4;
+}
+.stats {
+  padding-top: 2px;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-family: airbnb-cereal-bold;
+}
+
+.vault-btn {
+  font-family: airbnb-cereal-bold;
 }
 
 // TODO: should be scoped
@@ -689,7 +704,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-outline-account {
   color: #000;
-  background-color: #EBEBEB;
+  background-color: #ebebeb;
   border: none;
 }
 
@@ -700,8 +715,8 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-outline-account-not-connected:hover {
   color: #000;
-  background-color: #EBEBEB;
-  border: #EBEBEB;
+  background-color: #ebebeb;
+  border: #ebebeb;
 }
 
 .btn-outline-bitcoin {
@@ -728,7 +743,7 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-outline-bitcoin:not(:disabled):not(.disabled):active,
 .btn-outline-bitcoin:not(:disabled):not(.disabled).active,
-.show>.btn-outline-bitcoin.dropdown-toggle {
+.show > .btn-outline-bitcoin.dropdown-toggle {
   color: #000000;
   background-color: #ff9900;
   border-color: #ff9900;
@@ -736,6 +751,6 @@ a:not([href]):not([tabindex]):focus {
 
 .btn-outline-bitcoin:not(:disabled):not(.disabled):active:focus,
 .btn-outline-bitcoin:not(:disabled):not(.disabled).active:focus,
-.show>.btn-outline-bitcoin.dropdown-toggle:focus {
+.show > .btn-outline-bitcoin.dropdown-toggle:focus {
   box-shadow: 0 0 0 0.2rem rgba(230, 1, 122, 0.5);
 }

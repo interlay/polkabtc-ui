@@ -1,4 +1,3 @@
-
 import { safeRoundFiveDecimals } from 'common/utils/utils';
 import polkaBTCLogo from 'assets/img/polkabtc/PolkaBTC_black.svg';
 import polkadotLogo from 'assets/img/small-polkadot-logo.png';
@@ -8,10 +7,7 @@ interface Props {
   balanceDOT?: string;
 }
 
-const Balances = ({
-  balancePolkaBTC,
-  balanceDOT
-}: Props) => {
+const Balances = ({ balancePolkaBTC, balanceDOT }: Props) => {
   const roundedBalanceDot = safeRoundFiveDecimals(balanceDOT);
 
   return (
