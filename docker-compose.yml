@@ -68,9 +68,15 @@ services:
       - --keyring
       - eve
       - --polka-btc-url
+<<<<<<< HEAD
       - 'ws://polkabtc:9944'
       - --auto-register-with-stake
       - '100'
+=======
+      - "ws://polkabtc:9944"
+      - --auto-register-with-stake
+      - "100"
+>>>>>>> fixed conflicts
     environment: &client-env
       BITCOIN_RPC_URL: http://bitcoind:18443
       BITCOIN_RPC_USER: rpcuser
@@ -84,13 +90,18 @@ services:
       - --keyring
       - bob
       - --polka-btc-url
+<<<<<<< HEAD
       - 'ws://polkabtc:9944'
+=======
+      - "ws://polkabtc:9944"
+>>>>>>> fixed conflicts
     environment:
       RUST_LOG: info
     restart: unless-stopped
   faucet:
     image: 'registry.gitlab.com/interlay/polkabtc-clients/faucet:0.5.13'
     command:
+<<<<<<< HEAD
 <<<<<<< HEAD
       - faucet
       - --keyring
@@ -104,13 +115,31 @@ services:
       - --http-addr
       - '[::0]:3035'
 =======
+=======
+>>>>>>> fixed conflicts
       - /bin/sh
       - -c
       - |
         echo "Sleeping..."
         sleep 10
         faucet --keyring=eve --polka-btc-url 'ws://polkabtc:9944' --user-allowance 1 --vault-allowance 500 --http-addr '[::0]:3035'
+<<<<<<< HEAD
 >>>>>>> Updated footer and dashboards
+=======
+=======
+      - faucet
+      - --keyring
+      - ferdie
+      - --polka-btc-url
+      - "ws://polkabtc:9944"
+      - --user-allowance
+      - "1"
+      - --vault-allowance
+      - "500"
+      - --http-addr
+      - "[::0]:3035"
+>>>>>>> e2c67b712502a96058d18f4726966e2a731e68ad
+>>>>>>> fixed conflicts
     environment:
       RUST_LOG: info
     ports:
