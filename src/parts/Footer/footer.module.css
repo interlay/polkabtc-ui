@@ -14,7 +14,7 @@
 }
 
 .title {
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
   font-size: 16px;
   padding-bottom: 5px;
   text-align: left;
@@ -51,7 +51,7 @@
   padding: 6px 10px;
 }
 ::placeholder {
-  font-family: airbnb-cereal-book;
+  font-weight: 400;
 }
 .newsletter-container {
   display: flex;
@@ -63,7 +63,7 @@
 .newsletter-button {
   width: 120px;
   padding: 10px 10px;
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
   font-size: 14px;
   border-radius: 8px;
   text-transform: uppercase;
@@ -81,5 +81,5 @@
 }
 .rights-container {
   margin-top: 10px;
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
 }

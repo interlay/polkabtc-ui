@@ -7,9 +7,6 @@ export const BTC_DECIMALS = 8;
 // number of blocks before we prevent issue and redeem requests
 export const BLOCKS_BEHIND_LIMIT = 6;
 
-// timeout in milliseconds for setInterval
-export const COMPONENT_UPDATE_MS = 10000;
-
 // Set to true is on mainnet.
 export const BTC_MAINNET = false;
 
@@ -43,9 +40,7 @@ export const BTC_ADDRESS_REGEX =
         BTC_REGTEST_REGEX;
 
 export const PARACHAIN_URL = process.env.REACT_APP_PARACHAIN_URL || 'ws://127.0.0.1:9944';
-export const STAKED_RELAYER_URL = process.env.REACT_APP_STAKED_RELAYER_URL || 'http://localhost:3030';
 export const FAUCET_URL = process.env.REACT_APP_FAUCET_URL || 'http://localhost:3035';
-export const VAULT_CLIENT_URL = process.env.REACT_APP_VAULT_CLIENT_URL || 'http://localhost:3032';
 
 export const STATS_URL = process.env.REACT_APP_STATS_SERVER_URL || 'http://localhost:3007';
 
@@ -59,6 +54,8 @@ export const BTC_EXPLORER_TRANSACTION_API = 'https://blockstream.info/tx/';
 export const BTC_TEST_EXPLORER_TRANSACTION_API = 'https://blockstream.info/testnet/tx/';
 
 export const FEEDBACK_URL = 'https://forms.gle/2eKFnq4j1fkBgejW7';
+
+export const ACCOUNT_ID_TYPE_NAME = 'AccountId';
 
 // ######################################
 // STAKED RELAYER
@@ -90,7 +87,7 @@ export const BTC_RELAY_DELAY_CRITICAL = 12;
 // #######################################
 export const BETA_LAUNCH_DATE = 1614675600; // Tue Mar 02 2021 09:00:00 GMT+0000
 
-export const CHALLENGES_2_AND_3_START = 1615392000000; // Wed Mar 10 2021 16:00:00 GMT+0000
+export const CHALLENGES_2_AND_3_START = 1615467600000; // Wed Mar 10 2021 16:00:00 GMT+0000
 export const CHALLENGE_4_START = 1615816800000; // Mon Mar 15 2021 14:00:00 GMT+0000
 
 export {

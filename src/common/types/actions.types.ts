@@ -1,6 +1,6 @@
 import { IssueRequest, VaultIssue } from './issue.types';
 import { RedeemRequest, VaultRedeem } from './redeem.types';
-import { VaultReplaceRequest, Vault } from './vault.types';
+import { VaultReplaceRequest } from './vault.types';
 import { StoreType, ParachainStatus, Prices } from './util.types';
 import { TabTypes } from 'utils/enums/tab-types';
 
@@ -80,7 +80,7 @@ export interface InitGeneralDataAction {
     totalLockedDOT: string;
     btcRelayHeight: number;
     bitcoinHeight: number;
-    stateOfBTCParachain: ParachainStatus;
+    parachainStatus: ParachainStatus;
 }
 
 export interface UpdateBalancePolkaBTC {
@@ -234,6 +234,7 @@ export const UPDATE_ISSUE_REQUEST = 'UPDATE_ISSUE_REQUEST';
 export const ADD_VAULT_ISSUES = 'ADD_VAULT_ISSUES';
 export const UPDATE_ALL_ISSUE_REQUESTS = 'UPDATE_ALL_ISSUE_REQUESTS';
 export const CHANGE_SELECTED_ISSUE = 'CHANGE_SELECTED_ISSUE';
+export const UPDATE_ISSUE_PERIOD = 'UPDATE_ISSUE_PERIOD';
 
 export interface ChangeSelectedIssue {
     type: typeof CHANGE_SELECTED_ISSUE;
@@ -279,6 +280,10 @@ export interface UpdateAllIssueRequests {
     userDotAddress: string;
     issueRequests: IssueRequest[];
 }
+export interface UpdateIssuePeriod {
+    type: typeof UPDATE_ISSUE_PERIOD;
+    period: number;
+}
 
 export type IssueActions =
     | ChangeIssueStep
@@ -291,27 +296,21 @@ export type IssueActions =
     | InitState
     | AddVaultIssues
     | UpdateAllIssueRequests
-    | ChangeSelectedIssue;
+    | ChangeSelectedIssue
+    | UpdateIssuePeriod;
 
 // VAULT
 
 export const ADD_REPLACE_REQUESTS = 'ADD_REPLACE_REQUESTS';
-export const UPDATE_BTC_ADDRESS = 'UPDATE_BTC_ADDRESS';
 export const UPDATE_COLLATERALIZATION = 'UPDATE_COLLATERALIZATION';
 export const UPDATE_COLLATERAL = 'UPDATE_COLLATERAL';
 export const UPDATE_LOCKED_BTC = 'UPDATE_LOCKED_BTC';
 export const UPDATE_SLA = 'UPDATE_SLA';
-export const UPDATE_PREMIUM_VAULT = 'UPDATE_PREMIUM_VAULT';
 export const UPDATE_APY = 'UPDATE_APY';
 
 export interface AddReplaceRequests {
     type: typeof ADD_REPLACE_REQUESTS;
     requests: VaultReplaceRequest[];
-}
-
-export interface UpdateBTCAddress {
-    type: typeof UPDATE_BTC_ADDRESS;
-    btcAddress: string;
 }
 
 export interface UpdateCollateralization {
@@ -334,11 +333,6 @@ export interface UpdateSLA {
     sla: string;
 }
 
-export interface UpdatePremiumVault {
-    type: typeof UPDATE_PREMIUM_VAULT;
-    vault: Vault;
-}
-
 export interface UpdateAPY {
     type: typeof UPDATE_APY;
     apy: string;
@@ -346,12 +340,9 @@ export interface UpdateAPY {
 
 export type VaultActions =
     | AddReplaceRequests
-    | UpdateBTCAddress
     | UpdateCollateralization
     | UpdateCollateral
     | UpdateLockedBTC
     | UpdateSLA
-    | UpdatePremiumVault
-    | ResetRedeemWizard
     | InitState
     | UpdateAPY;

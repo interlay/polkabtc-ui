@@ -31,13 +31,9 @@ import keyring from '@polkadot/ui-keyring';
 import {
   FaucetClient,
   planckToDOT,
-  satToBTC
-} from '@interlay/polkabtc';
-import {
+  satToBTC,
   createPolkabtcAPI,
-  PolkaBTCAPI,
-  StakedRelayerClient,
-  VaultClient
+  PolkaBTCAPI
 } from '@interlay/polkabtc';
 
 import Layout from 'parts/Layout';
@@ -62,14 +58,14 @@ import checkStaticPage from 'config/check-static-page';
 import { PAGES } from 'utils/constants/links';
 import {
   isPolkaBtcLoaded,
-  isStakedRelayerLoaded,
-  isVaultClientLoaded,
   changeAddressAction,
   initGeneralDataAction,
   setInstalledExtensionAction,
   showAccountModalAction,
   updateAddressesAction,
-  isFaucetLoaded
+  isFaucetLoaded,
+  isStakedRelayerLoaded,
+  isVaultClientLoaded
 } from 'common/actions/general.actions';
 import './i18n';
 import * as constants from './constants';
@@ -82,7 +78,8 @@ import {
 // FIXME: Clean-up and move to scss
 import './_general.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import './app.css';
+import { ACCOUNT_ID_TYPE_NAME } from './constants';
+import { StatusCode } from '@interlay/polkabtc/build/interfaces';
 
 // TODO: block code-splitting for now
 // const ApplicationPage = React.lazy(() =>
@@ -140,6 +137,82 @@ function App(): ReactElement {
   const dispatch = useDispatch();
   const store = useStore();
 
+  // Load the main PolkaBTC API - connection to the PolkaBTC bridge
+  const loadPolkaBTC = useCallback(async (): Promise<void> => {
+    try {
+      window.polkaBTC = await connectToParachain();
+      dispatch(isPolkaBtcLoaded(true));
+      setIsLoading(false);
+    } catch (error) {
+      toast.warn('Unable to connect to the BTC-Parachain.');
+      console.log('Unable to connect to the BTC-Parachain.');
+      console.log('error.message => ', error.message);
+    }
+
+    try {
+      startFetchingLiveData(dispatch, store);
+    } catch (error) {
+      console.log('Error fetching live data.');
+      console.log('error.message => ', error.message);
+    }
+  }, [
+    dispatch,
+    store
+  ]);
+
+  // Load the connection to the faucet - only for testnet purposes
+  const loadFaucet = useCallback(async (): Promise<void> => {
+    try {
+      window.faucet = new FaucetClient(constants.FAUCET_URL);
+      dispatch(isFaucetLoaded(true));
+    } catch (error) {
+      console.log('Unable to connect to the faucet.');
+      console.log('error.message => ', error.message);
+    }
+  }, [
+    dispatch
+  ]);
+
+  // Maybe load the vault client - only if the current address is also registered as a vault
+  const maybeLoadVault = useCallback(async (newAddress: string): Promise<void> => {
+    const id = window.polkaBTC.api.createType(ACCOUNT_ID_TYPE_NAME, newAddress);
+    let vaultLoaded = false;
+    try {
+      const vault = await window.polkaBTC.vaults.get(id);
+      vaultLoaded = vault !== undefined;
+    } catch (error) {
+      console.log('No PolkaBTC vault found for the account in the connected Polkadot wallet.');
+      console.log('error.message => ', error.message);
+    } finally {
+      dispatch(isVaultClientLoaded(vaultLoaded));
+    }
+  }, [
+    dispatch
+  ]);
+
+  // Maybe load the staked relayer client - only if the current address is also registered as a vault
+  const maybeLoadStakedRelayer = useCallback(async (newAddress: string): Promise<void> => {
+    const id = window.polkaBTC.api.createType(ACCOUNT_ID_TYPE_NAME, newAddress);
+    let relayerLoaded = false;
+    try {
+      const [isActive, isInactive] = await Promise.all([
+        window.polkaBTC.stakedRelayer.isStakedRelayerActive(id),
+        window.polkaBTC.stakedRelayer.isStakedRelayerInactive(id)
+      ]);
+      console.log(newAddress);
+      console.log('Active ' + isActive);
+      console.log('Inactive ' + isInactive);
+      relayerLoaded = isActive || isInactive;
+    } catch (error) {
+      console.log('No PolkaBTC staked relayer found for the account in the connected Polkadot wallet.');
+      console.log('error.message => ', error.message);
+    } finally {
+      dispatch(isStakedRelayerLoaded(relayerLoaded));
+    }
+  }, [
+    dispatch
+  ]);
+
   const selectAccount = useCallback(
     async (newAddress: string): Promise<void> => {
       if (!polkaBtcLoaded || !newAddress) {
@@ -152,50 +225,22 @@ function App(): ReactElement {
 
       dispatch(showAccountModalAction(false));
       dispatch(changeAddressAction(newAddress));
+      // reset the staked relayer and vault
+      dispatch(isVaultClientLoaded(false));
+      dispatch(isStakedRelayerLoaded(false));
+      // possibly load vault and relayer if account is set
+      await Promise.allSettled([
+        maybeLoadVault(newAddress),
+        maybeLoadStakedRelayer(newAddress)
+      ]);
     },
     [
       polkaBtcLoaded,
-      dispatch
+      dispatch,
+      maybeLoadStakedRelayer,
+      maybeLoadVault
     ]
   );
-
-  const createAPIInstance = useCallback(async (): Promise<void> => {
-    try {
-      window.relayer = new StakedRelayerClient(constants.STAKED_RELAYER_URL);
-      dispatch(isStakedRelayerLoaded(true));
-
-      window.vaultClient = new VaultClient(constants.VAULT_CLIENT_URL);
-      dispatch(isVaultClientLoaded(true));
-
-      window.faucet = new FaucetClient(constants.FAUCET_URL);
-      dispatch(isFaucetLoaded(true));
-
-      // TODO: should avoid any race condition
-      setTimeout(() => {
-        if (!window.polkaBTC) {
-          toast.warn(
-            'Unable to connect to the BTC-Parachain. ' +
-            'Please check your internet connection or try again later.'
-          );
-        }
-      }, 10000);
-      window.polkaBTC = await connectToParachain();
-      dispatch(isPolkaBtcLoaded(true));
-
-      startFetchingLiveData(dispatch, store);
-      setIsLoading(false);
-    } catch (error) {
-      if (!window.polkaBTC) {
-        toast.warn(
-          'Unable to connect to the BTC-Parachain. ' +
-          'Please check your internet connection or try again later.'
-        );
-      }
-    }
-  }, [
-    dispatch,
-    store
-  ]);
 
   useEffect(() => {
     // Do not load data if showing static landing page only
@@ -220,17 +265,26 @@ function App(): ReactElement {
         ]);
         const totalPolkaBTC = new Big(satToBTC(totalPolkaSAT.toString())).round(3).toString();
         const totalLockedDOT = new Big(planckToDOT(totalLockedPLANCK.toString())).round(3).toString();
+
+        const parachainStatus = (state: StatusCode) => {
+          if (state.isError) {
+            return ParachainStatus.Error;
+          } else if (state.isRunning) {
+            return ParachainStatus.Running;
+          } else if (state.isShutdown) {
+            return ParachainStatus.Shutdown;
+          } else {
+            return ParachainStatus.Loading;
+          }
+        };
+
         dispatch(
           initGeneralDataAction(
             totalPolkaBTC,
             totalLockedDOT,
             Number(btcRelayHeight),
             bitcoinHeight,
-            state.isError ?
-              ParachainStatus.Error :
-              state.isRunning ?
-                ParachainStatus.Running :
-                ParachainStatus.Shutdown
+            parachainStatus(state)
           )
         );
       } catch (error) {
@@ -243,6 +297,7 @@ function App(): ReactElement {
     polkaBtcLoaded
   ]);
 
+  // Loads the address for the currently select account and maybe loads the vault and staked relayer dashboards
   useEffect(() => {
     // Do not load data if showing static landing page only
     if (checkStaticPage()) return;
@@ -275,6 +330,7 @@ function App(): ReactElement {
         dispatch(changeAddressAction(newAddress));
       } else {
         dispatch(changeAddressAction(''));
+        return false;
       }
 
       return true;
@@ -284,15 +340,23 @@ function App(): ReactElement {
       const accountsLoaded = await loadAccountData();
       if (accountsLoaded) {
         clearInterval(id);
+        // possibly load vault and relayer if account is set
+        await Promise.allSettled([
+          maybeLoadVault(address),
+          maybeLoadStakedRelayer(address)
+        ]);
       }
     }, 1000);
   }, [
     address,
     polkaBtcLoaded,
     dispatch,
-    extensions.length
+    extensions.length,
+    maybeLoadVault,
+    maybeLoadStakedRelayer
   ]);
 
+  // Loads the PolkaBTC bridge and the faucet
   useEffect(() => {
     // Do not load data if showing static landing page only
     if (checkStaticPage()) return;
@@ -304,17 +368,17 @@ function App(): ReactElement {
         setTimeout(() => {
           if (isLoading) setIsLoading(false);
         }, 3000);
-        await createAPIInstance();
+        await loadPolkaBTC();
+        await loadFaucet();
         keyring.loadAll({});
       } catch (error) {
-        toast.warn('Could not connect to the Parachain, please try again in a few seconds', {
-          autoClose: false
-        });
+        console.log(error.message);
       }
     })();
     startFetchingLiveData(dispatch, store);
   }, [
-    createAPIInstance,
+    loadPolkaBTC,
+    loadFaucet,
     isLoading,
     polkaBtcLoaded,
     dispatch,

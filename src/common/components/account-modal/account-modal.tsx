@@ -6,15 +6,14 @@ import {
 } from 'react-bootstrap';
 import {
   useDispatch,
-  useSelector,
-  useStore
+  useSelector
 } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
+import InterlayLink from 'components/InterlayLink';
 import { ReactComponent as PolkadotExtensionLogo } from 'assets/img/polkadot-extension-logo.svg';
 import { StoreType } from 'common/types/util.types';
 import { showAccountModalAction } from 'common/actions/general.actions';
-import fetchIssueTransactions from 'common/live-data/issue-transaction.watcher';
 import './account-modal.scss';
 
 type Props = {
@@ -33,7 +32,6 @@ function AccountModal({
     accounts,
     extensions
   } = useSelector((state: StoreType) => state.general);
-  const store = useStore();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -41,7 +39,6 @@ function AccountModal({
 
   const handleAccountSelect = (account: string) => () => {
     selectAccount(account);
-    fetchIssueTransactions(dispatch, store);
   };
 
   return (
@@ -61,12 +58,12 @@ function AccountModal({
             {!accounts?.length && (
               <p>
                 {t('no_account')}
-                <a
+                <InterlayLink
                   href={POLKADOT_EXTENSION}
                   target='_blank'
                   rel='noopener noreferrer'>
                   &nbsp;{t('here')}
-                </a>
+                </InterlayLink>
                 .
               </p>
             )}
@@ -90,7 +87,7 @@ function AccountModal({
             <p>
               {t('install_supported_wallets')}
             </p>
-            <a
+            <InterlayLink
               className='polkadot-extension-link'
               href={POLKADOT_EXTENSION}
               target='_blank'
@@ -99,7 +96,7 @@ function AccountModal({
                 width={30}
                 height={30} />
               <span style={{ marginLeft: 16 }}>Polkadot.js</span>
-            </a>
+            </InterlayLink>
           </>
         )}
       </Modal.Body>

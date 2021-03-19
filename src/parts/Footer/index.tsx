@@ -2,7 +2,6 @@
 import { useTranslation } from 'react-i18next';
 import InterlayImage from 'components/InterlayImage';
 import InterlayLink from 'components/InterlayLink';
-// import { getCurrentYear } from 'utils/helpers/time';
 import {
   POLKA_BTC_UI_GITHUB,
   WEB3_FOUNDATION,
@@ -26,11 +25,11 @@ import {
   DEVELOPERS_DOCS,
   ROADMAP
 } from 'config/links';
+import styles from './footer.module.css';
 // TODO: should use an SVG
 import interlayImage from 'assets/img/interlay.png';
 // TODO: should use next-gen format
 import web3FoundationImage from 'assets/img/polkabtc/web3-foundation-grants-badge-black.png';
-import styles from './footer.module.css';
 
 const packageJson = require('../../../package.json');
 
