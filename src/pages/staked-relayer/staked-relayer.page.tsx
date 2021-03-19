@@ -93,23 +93,26 @@ export default function StakedRelayerPage(): ReactElement {
             mainTitle=''
             subTitle={address} />
           {relayerLoaded && polkaBtcLoaded && (
-            <div className='col-lg-10 offset-1'>
-              <div className='row justify-content-center'>
-                <div className='col-lg-3'>
-                  <div
-                    className='card stats-card mb-3'
-                    style={{ minHeight: '100px' }}>
-                    <div>{t('relayer.stake_locked')}</div>
-                    <span className='stats'>{dotLocked.toString()}</span> DOT
-                  </div>
+            <div className='relayer-stats-grid-container'>
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div>{t('relayer.stake_locked')}</div>
+                <div
+                  className='stats'
+                  style={{ color: getAccents('d_pink').color }}>
+                  {dotLocked.toString()} DOT
                 </div>
-                <div className='col-lg-3'>
-                  <div
-                    className='card stats-card mb-3'
-                    style={{ minHeight: '100px' }}>
-                    <div>{t('fees_earned')}</div>
-                    <span className='stats'>{feesEarnedPolkaBTC}</span> PolkaBTC
-                  </div>
+              </div>
+
+              <div
+                className='stats-card'
+                style={{ minHeight: '100px' }}>
+                <div>{t('fees_earned')}</div>
+                <div
+                  className='stats'
+                  style={{ color: getAccents('d_pink').color }}>
+                  {feesEarnedPolkaBTC} PolkaBTC
                 </div>
               </div>
               <div

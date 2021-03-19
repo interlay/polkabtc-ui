@@ -2,7 +2,6 @@
 import { useTranslation } from 'react-i18next';
 import InterlayImage from 'components/InterlayImage';
 import InterlayLink from 'components/InterlayLink';
-// import { getCurrentYear } from 'utils/helpers/time';
 import {
   POLKA_BTC_UI_GITHUB,
   WEB3_FOUNDATION,
@@ -27,7 +26,6 @@ import {
   ROADMAP
 } from 'config/links';
 import styles from './footer.module.css';
-
 // TODO: should use an SVG
 import interlayImage from 'assets/img/interlay.png';
 // TODO: should use next-gen format
