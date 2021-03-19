@@ -23,8 +23,9 @@ import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
 // TODO: should fix by scoping only necessary CSS into a component
 import '../dashboard/dashboard-subpage.scss';
-import { ACCOUNT_ID_TYPE_NAME } from '../../constants';
 import { getAccents } from '../dashboard/dashboard-colors';
+import { ACCOUNT_ID_TYPE_NAME } from '../../constants';
+
 export default function VaultDashboardPage(): ReactElement {
   const [updateCollateralModalStatus, setUpdateCollateralModalStatus] = useState(CollateralUpdateStatus.Hidden);
   const [showRequestReplacementModal, setShowRequestReplacementModal] = useState(false);

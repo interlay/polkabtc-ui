@@ -679,7 +679,7 @@ input[type='number'] {
   border-radius: 8px;
 }
 .stats-title {
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
   opacity: 0.4;
 }
 .stats {
@@ -687,11 +687,11 @@ input[type='number'] {
   width: 100%;
   text-align: center;
   font-size: 1.5rem;
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
 }
 
 .vault-btn {
-  font-family: airbnb-cereal-bold;
+  font-weight: 700;
 }
 
 // TODO: should be scoped
