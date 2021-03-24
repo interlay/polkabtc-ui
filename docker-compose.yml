@@ -33,11 +33,9 @@ services:
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword createwallet Alice
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword createwallet Bob
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword createwallet Dave
-        bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword createwallet Eve
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword loadwallet Alice
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword loadwallet Bob
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword loadwallet Dave
-        bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword loadwallet Eve
         ALICE_ADDRESS=$$(bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword -rpcwallet=Alice getnewaddress)
         # coins need 100 confirmations to be spendable
         bitcoin-cli -regtest -rpcconnect=bitcoind -rpcwait -rpcuser=rpcuser -rpcpassword=rpcpassword generatetoaddress 101 $${ALICE_ADDRESS}
@@ -69,6 +67,7 @@ services:
       - eve
       - --polka-btc-url
 <<<<<<< HEAD
+<<<<<<< HEAD
       - 'ws://polkabtc:9944'
       - --auto-register-with-stake
       - '100'
@@ -77,6 +76,11 @@ services:
       - --auto-register-with-stake
       - "100"
 >>>>>>> fixed conflicts
+=======
+      - 'ws://polkabtc:9944'
+      - --auto-register-with-stake
+      - '100'
+>>>>>>> c254971da03a2f9794cb44cbb2649bd00604b0e8
     environment: &client-env
       BITCOIN_RPC_URL: http://bitcoind:18443
       BITCOIN_RPC_USER: rpcuser
@@ -91,10 +95,14 @@ services:
       - bob
       - --polka-btc-url
 <<<<<<< HEAD
+<<<<<<< HEAD
       - 'ws://polkabtc:9944'
 =======
       - "ws://polkabtc:9944"
 >>>>>>> fixed conflicts
+=======
+      - 'ws://polkabtc:9944'
+>>>>>>> c254971da03a2f9794cb44cbb2649bd00604b0e8
     environment:
       RUST_LOG: info
     restart: unless-stopped
@@ -103,6 +111,9 @@ services:
     command:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> c254971da03a2f9794cb44cbb2649bd00604b0e8
       - faucet
       - --keyring
       - ferdie
@@ -114,6 +125,7 @@ services:
       - '500'
       - --http-addr
       - '[::0]:3035'
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> fixed conflicts
@@ -140,6 +152,8 @@ services:
       - "[::0]:3035"
 >>>>>>> e2c67b712502a96058d18f4726966e2a731e68ad
 >>>>>>> fixed conflicts
+=======
+>>>>>>> c254971da03a2f9794cb44cbb2649bd00604b0e8
     environment:
       RUST_LOG: info
     ports:
@@ -167,15 +181,15 @@ services:
       - |
         echo "Sleeping..."
         sleep 3
-        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=eve set-issue-period --period=2000
-        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=eve set-redeem-period --period=2000
+        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=alice set-issue-period --period=2000
+        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=alice set-redeem-period --period=2000
 
         # wait for the vault to register
         sleep 9
         # NOTE: bitcoin-cli not installed on image
         ALICE_ADDRESS="bcrt1q56l7a4g3hluklqmxs89wj8dkpazemfykwfkz4x"
         testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=bob set-exchange-rate --exchange-rate=385523187
-        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=eve request-issue --issue-amount=10000000 --vault=dave
+        testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=alice request-issue --issue-amount=10000000 --vault=dave
         REDEEM_ID=$$(testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=alice request-redeem --redeem-amount=1000000 --btc-address=$${ALICE_ADDRESS} --vault=dave)
         # testdata-gen --polka-btc-url 'ws://polkabtc:9944' --keyring=alice execute-redeem --redeem-id=$${REDEEM_ID}
     environment:
