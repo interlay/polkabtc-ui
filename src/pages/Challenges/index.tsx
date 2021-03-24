@@ -1,37 +1,16 @@
-
-import {
-  useState,
-  useEffect,
-  ReactElement,
-  useMemo
-} from 'react';
+import { useState, useEffect, ReactElement, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  ToggleButton,
-  ToggleButtonGroup,
-  Tab,
-  Tabs
-} from 'react-bootstrap';
-import {
-  useTranslation,
-  TFunction
-} from 'react-i18next';
+import { ToggleButton, ToggleButtonGroup, Tab, Tabs } from 'react-bootstrap';
+import { useTranslation, TFunction } from 'react-i18next';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import {
-  RelayerData,
-  VaultData
-} from '@interlay/polkabtc-stats';
+import { RelayerData, VaultData } from '@interlay/polkabtc-stats';
 import clsx from 'clsx';
 
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
 import InterlayImage from 'components/InterlayImage';
 import InterlayLink from 'components/InterlayLink';
-import CardList, {
-  Card,
-  CardHeader,
-  CardBody
-} from 'components/CardList';
+import CardList, { Card, CardHeader, CardContent } from 'components/CardList';
 import {
   POLKA_BTC_DOC_TREASURE_HUNT,
   POLKA_BTC_DOC_TREASURE_HUNT_VAULT,
@@ -57,7 +36,7 @@ type ChallengeSelectorProps = {
   challengeIdx: number;
   setChallengeIdx: (idx: number) => void;
   t: TFunction;
-}
+};
 
 function ChallengeSelector({ challengeIdx, setChallengeIdx, t }: ChallengeSelectorProps): ReactElement {
   const timestamp = Date.now();
@@ -68,20 +47,20 @@ function ChallengeSelector({ challengeIdx, setChallengeIdx, t }: ChallengeSelect
         type='radio'
         value={challengeIdx}
         name='challenge'
-        onChange={val => setChallengeIdx(val)}>
-        {timestamp > CHALLENGE_CUTOFFS[0] && ( // only show buttons at all if at least the first is active
-          CHALLENGE_CUTOFFS.map((displayFrom, idx) =>
-            timestamp > displayFrom &&
-            <ToggleButton
-              variant='outline-polkadot'
-              className='font-weight-bold'
-              value={idx}>
-              {t(`leaderboard.challenge_buttons.${idx}`)}
-            </ToggleButton>
-          )
-        )}
+        onChange={(val: any) => setChallengeIdx(val)}>
+        {timestamp > CHALLENGE_CUTOFFS[0] && // only show buttons at all if at least the first is active
+          CHALLENGE_CUTOFFS.map(
+            (displayFrom, idx) =>
+              timestamp > displayFrom && (
+                <ToggleButton
+                  variant='outline-polkadot'
+                  className='font-weight-bold'
+                  value={idx}>
+                  {t(`leaderboard.challenge_buttons.${idx}`)}
+                </ToggleButton>
+              )
+          )}
       </ToggleButtonGroup>
-
     </div>
   );
 }
@@ -94,25 +73,21 @@ const CHALLENGE_ITEMS = [
   },
   {
     title: 'leaderboard.challenges.vault_treasure_hunt',
-    titleIcon: (
-      <InterlayImage
-        src={newMark}
-        width={20}
-        height={20}
-        alt='new' />
-    ),
+    titleIcon: <InterlayImage
+      src={newMark}
+      width={20}
+      height={20}
+      alt='new' />,
     content: 'leaderboard.challenges.vault_treasure_hunt_desc',
     contentLink: POLKA_BTC_DOC_TREASURE_HUNT_VAULT
   },
   {
     title: 'leaderboard.challenges.relayer_treasure_hunt',
-    titleIcon: (
-      <InterlayImage
-        src={newMark}
-        width={20}
-        height={20}
-        alt='new' />
-    ),
+    titleIcon: <InterlayImage
+      src={newMark}
+      width={20}
+      height={20}
+      alt='new' />,
     content: 'leaderboard.challenges.relayer_treasure_hunt_desc',
     contentLink: POLKA_BTC_DOC_TREASURE_HUNT_RELAYER
   },
@@ -215,7 +190,7 @@ function Challenges(): ReactElement {
                   {t(cardItem.title)}
                   {cardItem.titleIcon}
                 </CardHeader>
-                <CardBody>
+                <CardContent>
                   {t(cardItem.content)}
                   {cardItem.contentLink && (
                     <InterlayLink
@@ -228,7 +203,7 @@ function Challenges(): ReactElement {
                       <FaExternalLinkAlt />
                     </InterlayLink>
                   )}
-                </CardBody>
+                </CardContent>
               </Card>
             ))}
           </CardList>
@@ -238,10 +213,7 @@ function Challenges(): ReactElement {
           {/* TODO: should use a tailwindcss Tabs component */}
           <Tabs>
             <Tab
-              tabClassName={clsx(
-                'no-underline',
-                'text-black'
-              )}
+              tabClassName={clsx('no-underline', 'text-black')}
               eventKey='vaults'
               title={t('leaderboard.vault_scores')}>
               <ChallengeSelector {...{ challengeIdx, setChallengeIdx, t }} />
@@ -255,10 +227,7 @@ function Challenges(): ReactElement {
               </div>
             </Tab>
             <Tab
-              tabClassName={clsx(
-                'no-underline',
-                'text-black'
-              )}
+              tabClassName={clsx('no-underline', 'text-black')}
               eventKey='relayers'
               title={t('leaderboard.relayer_scores')}>
               <ChallengeSelector {...{ challengeIdx, setChallengeIdx, t }} />
