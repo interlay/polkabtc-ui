@@ -67,6 +67,7 @@ th,
 li,
 ul {
   font-family: 'airbnb-cereal', Arial;
+  font-weight: 400;
 }
 
 .header {
@@ -666,32 +667,6 @@ input[type='number'] {
 
 .medium-text {
   font-weight: 500;
-}
-.stats-grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 20px;
-  row-gap: 20px;
-}
-.stats-card {
-  background-color: #f3f3f3;
-  padding: 30px 80px;
-  border-radius: 8px;
-}
-.stats-title {
-  font-weight: 700;
-  opacity: 0.4;
-}
-.stats {
-  padding-top: 2px;
-  width: 100%;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.vault-btn {
-  font-weight: 700;
 }
 
 // TODO: should be scoped

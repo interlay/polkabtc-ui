@@ -1,74 +1,55 @@
+/** @jsxImportSource @emotion/react */
 
 import clsx from 'clsx';
+import tw, { TwStyle } from 'twin.macro';
 
-const Card = ({
-  className,
-  ...rest
-}: React.ComponentPropsWithoutRef<'li'>) => (
+interface Props {
+  twStyle?: TwStyle;
+}
+
+const Card = ({ twStyle, ...rest }: Props & React.ComponentPropsWithRef<'li'>) => (
   <li
-    className={clsx(
-      'flex',
-      'flex-col',
-      'justify-center',
-      'items-center',
-      'lg:w-80',
-      'h-32',
-      'px-4',
-      'py-8',
-      'my-4',
-      'lg:m-2',
-      'rounded',
-      'border',
-      'border-solid',
-      'border-gray-300',
-      'shadow-sm',
-      className
-    )}
+    css={[
+      tw`flex`,
+      tw`flex-col`,
+      tw`justify-center`,
+      tw`items-center`,
+      tw`lg:w-80`,
+      tw`h-32`,
+      tw`px-4`,
+      tw`py-8`,
+      tw`my-4`,
+      tw`lg:m-2`,
+      tw`rounded`,
+      tw`border`,
+      tw`border-solid`,
+      tw`border-gray-300`,
+      tw`shadow-sm`,
+      twStyle
+    ]}
     {...rest} />
 );
 
-const CardHeader = ({
-  className,
-  children,
-  ...rest
-}: React.ComponentPropsWithoutRef<'h2'>) => (
+const CardHeader = ({ className, children, ...rest }: React.ComponentPropsWithRef<'h2'>) => (
   <h2
     // TODO: hardcoded for now
     style={{
       fontWeight: 700
     }}
-    className={clsx(
-      'text-base',
-      'font-bold',
-      className
-    )}
+    className={clsx('text-base', 'font-bold', className)}
     {...rest}>
     {children}
   </h2>
 );
 
-const CardBody = (props: React.ComponentPropsWithoutRef<'div'>) => (
-  <div {...props} />
-);
+const CardContent = (props: React.ComponentPropsWithRef<'div'>) => <div {...props} />;
 
-const CardList = ({
-  className,
-  ...rest
-}: React.ComponentPropsWithoutRef<'ul'>) => (
+const CardList = ({ className, ...rest }: React.ComponentPropsWithRef<'ul'>) => (
   <ul
-    className={clsx(
-      'lg:flex',
-      'lg:justify-center',
-      'lg:flex-wrap',
-      className
-    )}
+    className={clsx('lg:flex', 'lg:justify-center', 'lg:flex-wrap', className)}
     {...rest} />
 );
 
-export {
-  Card,
-  CardHeader,
-  CardBody
-};
+export { Card, CardHeader, CardContent };
 
 export default CardList;
