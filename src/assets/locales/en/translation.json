@@ -538,6 +538,15 @@
     "developers": "Developers",
     "roadmap": "Roadmap",
     "follow_us": "Follow us on",
-    "newsletter": "Newsletter"
+    "newsletter": "Newsletter",
+  "maintenance": {
+    "type": {
+      "scheduled": "Scheduled maintenance on",
+      "unplanned": "Unplanned maintenance on"
+    },
+    "reason": {
+      "chain": "The chain will be upgraded."
+    },
+    "info": "More info here."
   }
 }
