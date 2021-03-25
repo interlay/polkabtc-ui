@@ -49,7 +49,7 @@ const Footer = () => {
             height={40}
             alt='Interlay' />
         </InterlayLink>
-        <div className={styles['left-padding-for-image']}>
+        <div className={styles['padding-for-logo-2']}>
           <InterlayLink
             href={WEB3_FOUNDATION}
             target='_blank'
@@ -252,13 +252,33 @@ const Footer = () => {
             <div className={styles['title']}>{t('footer.newsletter')}</div>
             <ul>
               <li>
-                <div className={styles['signup-container']}>
-                  <input
-                    type='text'
-                    className={styles['newsletter-input']}
-                    placeholder=' Enter email here' />
-                  <button className={styles['newsletter-button']}>Subscribe</button>
-                </div>
+                <form
+                  action='https://interlay.us4.list-manage.com/subscribe/post?u=4c3c3f21d3ec4c3ed94ea7353&amp;id=ad217abce9'
+                  method='post'
+                  id='mc-embedded-subscribe-form'
+                  name='mc-embedded-subscribe-form'
+                  className={styles['signup-container']}
+                  target='_blank'>
+                  <div id='mc_embed_signup_scroll'>
+                    <div className='input-group'>
+                      <input
+                        type='email'
+                        className={styles['newsletter-input']}
+                        placeholder=' Enter email here'
+                        name='EMAIL'
+                        id='mce-EMAIL' />
+                      <div>
+                        <button
+                          className={styles['newsletter-button']}
+                          type='submit'
+                          name='subscribe'
+                          id='mc-embedded-subscribe'>
+                          Subscribe
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </li>
               <li>
                 <div className={styles['signup-text-container']}>
