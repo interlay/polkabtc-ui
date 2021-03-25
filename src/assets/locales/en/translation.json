@@ -539,6 +539,10 @@
     "roadmap": "Roadmap",
     "follow_us": "Follow us on",
     "newsletter": "Newsletter",
+    "subscribe": "Subscribe",
+    "join_newsletter": "Join our newsletter to get updates about upcoming challenges and PolkaBTC news!",
+    "rights_reserved": "All Rights Reserved"
+  },
   "maintenance": {
     "type": {
       "scheduled": "Scheduled maintenance on",

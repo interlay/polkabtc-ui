@@ -273,7 +273,7 @@ const Footer = () => {
                           type='submit'
                           name='subscribe'
                           id='mc-embedded-subscribe'>
-                          Subscribe
+                          {t('footer.subscribe')}
                         </button>
                       </div>
                     </div>
@@ -281,9 +281,7 @@ const Footer = () => {
                 </form>
               </li>
               <li>
-                <div className={styles['signup-text-container']}>
-                  Join our newsletter to get updates about upcoming challenges and PolkaBTC news!
-                </div>
+                <div className={styles['signup-text-container']}>{t('footer.join_newsletter')}</div>
               </li>
               <li>
                 <div className={styles['rights-container']}>
@@ -293,7 +291,7 @@ const Footer = () => {
                     rel='noopener noreferrer'>
                     v&nbsp;{packageJson.version}
                   </InterlayLink>
-                  &nbsp;&#169; {new Date().getFullYear()} Interlay. All Rights Reserved
+                  &nbsp;&#169; {new Date().getFullYear()} Interlay. {t('footer.rights_reserved')}
                 </div>
                 <li>
                   <InterlayLink
