@@ -38,18 +38,26 @@ import {
   getUsdAmount
 } from 'common/utils/utils';
 import { parachainToUIIssueRequest } from 'common/utils/requests';
-import bitcoinLogo from 'assets/img/small-bitcoin-logo.png';
-import polkadotLogo from 'assets/img/small-polkadot-logo.png';
+import { ReactComponent as BitcoinLogoIcon } from 'assets/img/bitcoin-logo.svg';
+import { ReactComponent as PolkadotLogoIcon } from 'assets/img/polkadot-logo.svg';
 import { ACCOUNT_ID_TYPE_NAME } from '../../../constants';
 import ParachainStatusInfo from 'components/ParachainStatusInfo';
+
+enum IssueState {
+  Loading,
+  Resolved,
+  Rejected
+}
 
 type EnterBTCForm = {
   amountPolkaBTC: string;
 }
 
-function EnterBTCAmount() {
+function EnterBTCAmount(): JSX.Element {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const [issueState, setIssueState] = useState(IssueState.Loading);
 
   const {
     polkaBtcLoaded,
@@ -71,9 +79,10 @@ function EnterBTCAmount() {
   } = useForm<EnterBTCForm>(defaultValues);
 
   // Additional info: bridge fee, security deposit, amount BTC
-  const [feeRate, setFeeRate] = useState(new Big(0));
+  // Current fee model specification taken from: https://interlay.gitlab.io/polkabtc-spec/spec/fee.html
+  const [feeRate, setFeeRate] = useState(new Big(0.005)); // set default to 0.5%
   const [fee, setFee] = useState('0');
-  const [depositRate, setDepositRate] = useState(new Big(0));
+  const [depositRate, setDepositRate] = useState(new Big(0.00005)); // set default to 0.005%
   const [deposit, setDeposit] = useState('0');
   const [amountBTC, setAmountBTC] = useState('0');
   const [btcToDotRate, setBtcToDotRate] = useState(new Big(0));
@@ -91,7 +100,10 @@ function EnterBTCAmount() {
 
   // Load issue related data
   useEffect(() => {
-    const fetchData = async () => {
+    // Loading this data is not strictly required as long as the constantly set values did
+    // not change. However, you will not see the correct value for the security deposit.
+    // But not having this data will NOT block the requestIssue
+    const fetchFeeData = async () => {
       if (!polkaBtcLoaded) return;
 
       try {
@@ -100,14 +112,12 @@ function EnterBTCAmount() {
           depositRate,
           issuePeriodInBlocks,
           dustValueAsSatoshi,
-          vaultsMap,
           btcToDot
         ] = await Promise.all([
           window.polkaBTC.issue.getFeeRate(),
           window.polkaBTC.fee.getIssueGriefingCollateralRate(),
           window.polkaBTC.issue.getIssuePeriod(),
           window.polkaBTC.redeem.getDustValue(),
-          window.polkaBTC.vaults.getVaultsWithIssuableTokens(),
           window.polkaBTC.oracle.getExchangeRate()
         ]);
         // Set bridge fee rate
@@ -120,21 +130,36 @@ function EnterBTCAmount() {
         // Set dust value (minimum amount)
         const dustValueBtc = satToBTC(dustValueAsSatoshi.toString());
         setDustValue(dustValueBtc);
-        // Set the vault maximum
-        let maxVaultAmount = new BN(0);
-        for (const issuableTokens of vaultsMap.values()) {
-          maxVaultAmount = issuableTokens.toBn();
-          break;
-        }
-        setVaultMaxAmount(satToBTC(maxVaultAmount.toString()));
-        setVaults(vaultsMap);
         // Set exchange rate
         setBtcToDotRate(btcToDot);
       } catch (error) {
         console.log('[EnterBtcAmount useEffect] error.message => ', error.message);
       }
     };
-    fetchData();
+
+    // This data (the vaults) is strictly required to request issue
+    const fetchVaultData = async () => {
+      if (!polkaBtcLoaded) return;
+
+      try {
+        const vaultsMap = await window.polkaBTC.vaults.getVaultsWithIssuableTokens();
+        // Set the vault maximum
+        let maxVaultAmount = new BN(0);
+        // first item in the ma is the vault with the largest capacity
+        for (const issuableTokens of vaultsMap.values()) {
+          maxVaultAmount = issuableTokens.toBn();
+          break;
+        }
+        setVaultMaxAmount(satToBTC(maxVaultAmount.toString()));
+        setVaults(vaultsMap);
+        setIssueState(IssueState.Resolved);
+      } catch (error) {
+        console.log('[EnterBtcAmount useEffect] error.message => ', error.message);
+        setIssueState(IssueState.Rejected);
+      }
+    };
+    fetchFeeData();
+    fetchVaultData();
   }, [
     polkaBtcLoaded,
     dispatch
@@ -153,7 +178,7 @@ function EnterBTCAmount() {
       setFee(fee.toString());
       // Update security deposit
       const deposit = amountPolkaBTC.mul(btcToDotRate).mul(depositRate);
-      setDeposit(deposit.toString());
+      setDeposit(deposit.round(8).toString());
       // Update total BTC
       const amountBTC = amountPolkaBTC.add(fee);
       setAmountBTC(amountBTC.toString());
@@ -271,14 +296,17 @@ function EnterBTCAmount() {
             <div className='row'>
               <div className='col-6 temp-text-left'>{t('bridge_fee')}</div>
               <div className='col fee-number'>
-                <div>
-                  <img
-                    src={bitcoinLogo}
-                    width='23px'
-                    height='23px'
-                    alt='bitcoin logo'>
-                  </img> &nbsp;
-                  <span className='fee-btc'>{displayBtcAmount(fee)}</span> BTC
+                <div
+                  className={clsx(
+                    'flex',
+                    'justify-center',
+                    'space-x-1'
+                  )}>
+                  <BitcoinLogoIcon
+                    width={23}
+                    height={23} />
+                  <span className='fee-btc'>{displayBtcAmount(fee)}</span>
+                  <span>BTC</span>
                 </div>
                 <div>{'~ $' + getUsdAmount(fee, prices.bitcoin.usd)}</div>
               </div>
@@ -292,15 +320,17 @@ function EnterBTCAmount() {
             <div className='row'>
               <div className='col-6 temp-text-left'>{t('issue_page.security_deposit')}</div>
               <div className='col fee-number'>
-                <div>
-                  <img
-                    src={polkadotLogo}
-                    width='20px'
-                    height='20px'
-                    style={{ marginRight: '5px' }}
-                    alt='polkadot logo'>
-                  </img>
-                  <span className='fee-btc'>{deposit}</span> DOT
+                <div
+                  className={clsx(
+                    'flex',
+                    'justify-center',
+                    'space-x-1'
+                  )}>
+                  <PolkadotLogoIcon
+                    width={20}
+                    height={20} />
+                  <span className='fee-btc'>{deposit}</span>
+                  <span>DOT</span>
                 </div>
                 <div>{'~ $' + getUsdAmount(deposit, prices.polkadot.usd)}</div>
               </div>
@@ -317,22 +347,22 @@ function EnterBTCAmount() {
             <div className='row justify-content-center'>
               <div className='col-6 temp-text-left total-added-value'>{t('total_deposit')}</div>
               <div className='col fee-number'>
-                <div>
-                  <img
-                    src={bitcoinLogo}
-                    width='23px'
-                    height='23px'
-                    alt='bitcoin logo'>
-                  </img>
-                  &nbsp;&nbsp;
+                <div
+                  className={clsx(
+                    'flex',
+                    'justify-center',
+                    'space-x-1'
+                  )}>
+                  <BitcoinLogoIcon
+                    width={23}
+                    height={23} />
                   <span className='fee-btc'>
                     {displayBtcAmount(amountBTC)}
-                  </span>{' '}
-                  BTC
+                  </span>
+                  <span>BTC</span>
                 </div>
                 <div>
-                  {'~ $' +
-                    getUsdAmount(amountBTC, prices.bitcoin.usd)}
+                  {'~ $' + getUsdAmount(amountBTC, prices.bitcoin.usd)}
                 </div>
               </div>
             </div>
@@ -341,7 +371,11 @@ function EnterBTCAmount() {
       </div>
       <ButtonMaybePending
         className='btn green-button app-btn'
-        disabled={parachainStatus !== ParachainStatus.Running || !address}
+        disabled={
+          parachainStatus !== ParachainStatus.Running ||
+          !address ||
+          issueState !== IssueState.Resolved
+        }
         isPending={isRequestPending}
         onClick={onSubmit}>
         {t('confirm')}
