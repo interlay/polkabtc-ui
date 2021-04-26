@@ -69,6 +69,7 @@ module.exports = {
           DEFAULT: '#a9a9a9'
         },
         primary: {
+          hoverLight: INTERLAY_ROSE[50],
           lightest: INTERLAY_ROSE[200],
           lighter: INTERLAY_ROSE[300],
           light: INTERLAY_ROSE[400],

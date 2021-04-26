@@ -6,16 +6,25 @@ import {
 import TestButton, { Props } from './index';
 
 const Template: Story<Props> = args => <TestButton {...args} />;
-
 const PrimaryLg = Template.bind({});
 PrimaryLg.args = {
-  text: 'TestButtosn',
+  variant: 'primary',
+  size: 'large',
   color: 'primary',
-  size: 'lg'
+  children: 'Test buttons'
+};
+
+const PrimaryMd = Template.bind({});
+PrimaryMd.args = {
+  color: 'primary',
+  variant: 'primary',
+  size: 'medium',
+  children: 'Test Button'
 };
 
 export {
-  PrimaryLg
+  PrimaryLg,
+  PrimaryMd
 };
 export default {
   title: 'UI/TestButton',
