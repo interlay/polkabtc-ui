@@ -10,13 +10,13 @@ const PrimaryLg = Template.bind({});
 PrimaryLg.args = {
   variant: 'primary',
   size: 'large',
-  color: 'primary',
+  color: 'polkadotPink',
   children: 'Test buttons'
 };
 
 const PrimaryMd = Template.bind({});
 PrimaryMd.args = {
-  color: 'primary',
+  color: 'polkadotPink',
   variant: 'primary',
   size: 'medium',
   children: 'Test Button'
