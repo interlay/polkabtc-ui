@@ -150,10 +150,10 @@ export default function UpdateCollateralModal(props: UpdateCollateralProps): JSX
   function getStatusText(status: CollateralUpdateStatus): string {
     switch (status) {
     case CollateralUpdateStatus.Increase:
-      if (currentButtonText !== t('vault.increase_collateral')) {
-        setCurrentButtonText(t('vault.increase_collateral'));
+      if (currentButtonText !== t('vault.deposit_collateral')) {
+        setCurrentButtonText(t('vault.deposit_collateral'));
       }
-      return t('vault.increase_collateral');
+      return t('vault.deposit_collateral');
     case CollateralUpdateStatus.Decrease:
       if (currentButtonText !== t('vault.withdraw_collateral')) {
         setCurrentButtonText(t('vault.withdraw_collateral'));

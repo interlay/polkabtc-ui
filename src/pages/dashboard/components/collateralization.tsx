@@ -63,7 +63,7 @@ export default function Collateralization({ linkButton }: CollateralizationProps
         <div className='values-container'>
           {!failed && (
             <>
-              <h1 className='text-interlayDodgerBlue'>{t('dashboard.vault.collateralization')}</h1>
+              <h1 className='text-'>{t('dashboard.vault.collateralization')}</h1>
               <h2>{safeRoundTwoDecimals(systemCollateralization)}%</h2>
               <h2>
                 {t('dashboard.vault.secure_threshold', {
@@ -83,26 +83,32 @@ export default function Collateralization({ linkButton }: CollateralizationProps
           </div>
         )}
       </div>
-      <div className='circle-container'>
-        <div
-          className='status-circle border-interlayDodgerBlue'
-          id='relay-circle'>
-          <h1
-            className={clsx(
-              'h1-xl',
-              'text-3xl',
-              'text-interlayDodgerBlue',
-              'text-center'
-            )}>
-            {failed ? t('no_data') :
-              [
-                issuablePolkaBTC === '0' ? t('loading') : safeRoundTwoDecimals(issuablePolkaBTC) + ' PolkaBTC',
-                // eslint-disable-next-line react/jsx-key
-                <br />, t('dashboard.vault.capacity')
-              ]
-            }
-          </h1>
-        </div>
+      <div
+        className={clsx(
+          'm-auto',
+          'w-60',
+          'h-60',
+          'rounded-full',
+          'justify-content',
+          'items-center',
+          'border-2',
+          'border-interlayDodgerBlue')}
+        id='relay-circle'>
+        <h1
+          className={clsx(
+            'h1-xl',
+            'text-2xl',
+            'text-interlayDodgerBlue',
+            'text-center'
+          )}>
+          {failed ? t('no_data') :
+            [
+              issuablePolkaBTC === '0' ? t('loading') : safeRoundTwoDecimals(issuablePolkaBTC) + ' PolkaBTC',
+              // eslint-disable-next-line react/jsx-key
+              <br />, t('dashboard.vault.capacity')
+            ]
+          }
+        </h1>
       </div>
     </DashboardCard>
   );

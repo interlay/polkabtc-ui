@@ -3,7 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+// ray test touch <<
 // import { GlobalStyles } from 'twin.macro';
+// ray test touch >>
 
 import App from './App';
 import { configureStore } from './store';
@@ -17,8 +19,10 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
+        {/* ray test touch << */}
         {/* TODO: could avoid vanilla tailwindcss */}
         {/* <GlobalStyles /> */}
+        {/* ray test touch >> */}
         <App />
       </Router>
     </Provider>

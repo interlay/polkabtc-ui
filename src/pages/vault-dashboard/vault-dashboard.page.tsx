@@ -1,5 +1,5 @@
 
-import React, {
+import {
   useState,
   useEffect
 } from 'react';
@@ -12,22 +12,32 @@ import {
   planckToDOT
 } from '@interlay/polkabtc';
 import { useTranslation } from 'react-i18next';
-import tw from 'twin.macro';
-import { IssueColumns, RedeemColumns } from '@interlay/polkabtc-stats';
+import {
+  IssueColumns,
+  RedeemColumns
+} from '@interlay/polkabtc-stats';
+import clsx from 'clsx';
 
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
 import TimerIncrement from 'parts/TimerIncrement';
 import CardList, {
-  Card,
-  CardHeader,
-  CardContent
+  CardListItem,
+  CardListItemHeader,
+  CardListItemContent,
+  CardListHeader,
+  CardListContainer
 } from 'components/CardList';
 import BoldParagraph from 'components/BoldParagraph';
 import UpdateCollateralModal, { CollateralUpdateStatus } from './update-collateral/update-collateral';
 import RequestReplacementModal from './request-replacement/request-replacement';
 import ReplaceTable from './replace-table/replace-table';
 import { StoreType } from 'common/types/util.types';
+import {
+  safeRoundTwoDecimals,
+  displayBtcAmount,
+  safeRoundFiveDecimals
+} from 'common/utils/utils';
 import {
   updateCollateralizationAction,
   updateCollateralAction,
@@ -40,7 +50,6 @@ import './vault-dashboard.page.scss';
 import VaultIssueRequestsTable from 'containers/VaultIssueRequestTable';
 import VaultRedeemRequestsTable from 'containers/VaultRedeemRequestTable';
 import usePolkabtcStats from 'common/hooks/use-polkabtc-stats';
-import { displayBtcAmount, displayDotAmount, safeRoundTwoDecimals } from 'common/utils/utils';
 
 function VaultDashboard(): JSX.Element {
   const [updateCollateralModalStatus, setUpdateCollateralModalStatus] = useState(CollateralUpdateStatus.Hidden);
@@ -97,7 +106,7 @@ function VaultDashboard(): JSX.Element {
           window.polkaBTC.vaults.getVaultCollateralization(vaultId),
           window.polkaBTC.vaults.getSLA(vaultId),
           window.polkaBTC.vaults.getAPY(vaultId),
-          window.polkaBTC.vaults.getIssuableAmount(vaultId),
+          window.polkaBTC.vaults.getIssuablePolkaBTC(),
           stats.getFilteredTotalIssues([{ column: IssueColumns.VaultId, value: address }]),
           stats.getFilteredTotalRedeems([{ column: RedeemColumns.VaultId, value: address }])
         ]);
@@ -140,7 +149,7 @@ function VaultDashboard(): JSX.Element {
         }
 
         if (issuablePolkaBTC.status === 'fulfilled') {
-          setCapacity(issuablePolkaBTC.value.toString());
+          setCapacity(issuablePolkaBTC.value);
         }
       } catch (error) {
         console.log('[VaultDashboard useEffect] error.message => ', error.message);
@@ -156,80 +165,91 @@ function VaultDashboard(): JSX.Element {
 
   const VAULT_ITEMS = [
     {
-      title: t('vault.locked_collateral'),
-      value: displayDotAmount(collateral),
-      unit: 'DOT'
+      title: t('collateralization'),
+      value: `${safeRoundTwoDecimals(collateralization?.toString(), '∞')}%`,
+      color: 'text-interlayDodgerBlue-800'
+    },
+    {
+      title: t('vault.fees_earned_polkabtc'),
+      value: displayBtcAmount(feesEarnedPolkaBTC),
+      color: 'text-interlayRose-800'
+    },
+    {
+      title: t('vault.fees_earned_dot'),
+      value: safeRoundFiveDecimals(feesEarnedDOT),
+      color: 'text-interlayRose-800'
+    },
+    {
+      title: t('sla_score'),
+      value: safeRoundTwoDecimals(sla),
+      color: 'text-interlayDodgerBlue-800'
+    }, {
+      title: t('vault.locked_dot'),
+      value: safeRoundFiveDecimals(collateral),
+      color: 'text-interlayRose-800'
     },
     {
       title: t('locked_btc'),
       value: displayBtcAmount(lockedBTC),
-      unit: 'BTC'
-    },
-    {
-      title: t('collateralization'),
-      value: `${displayDotAmount(collateralization?.toString(), '∞')}%`
-    },
-    {
-      title: t('vault.capacity'),
-      value: `~${displayDotAmount(capacity)}`,
-      unit: 'PolkaBTC'
-    },
-    {
-      title: t('fees_earned'),
-      value: displayBtcAmount(feesEarnedPolkaBTC.toString()),
-      unit: 'PolkaBTC'
-    },
-    {
-      title: t('fees_earned'),
-      value: displayDotAmount(feesEarnedDOT.toString()),
-      unit: 'DOT'
-    },
-    {
-      title: t('sla_score'),
-      value: safeRoundTwoDecimals(sla)
+      color: 'text-interlayTreePoppy-700'
+    }, {
+      title: t('vault.remaining_capacity'),
+      value: displayBtcAmount(capacity),
+      color: 'text-interlayRose-800'
     },
     {
       title: t('apy'),
       value: `~${safeRoundTwoDecimals(apy)}`,
-      unit: '%'
+      color: 'text-interlayDodgerBlue-800'
     }
   ];
 
   return (
     <MainContainer className='vault-dashboard-page'>
-      <div className='vault-container fade-in-animation'>
-        <div className='stacked-wrapper'>
-          <PageTitle
-            mainTitle={t('vault.vault_dashboard')}
-            subTitle={<TimerIncrement />} />
-          <BoldParagraph>{address}</BoldParagraph>
-        </div>
-        <>
-          <CardList>
-            {VAULT_ITEMS.map(vaultItem => (
-              <Card
-                key={`${vaultItem.title}-${vaultItem?.unit}`}
-                twStyle={tw`lg:w-56`}>
-                <CardHeader>
-                  {vaultItem.title}
-                </CardHeader>
-                <CardContent>
-                  <div className='text-4xl'>
-                    {vaultItem.value}
-                  </div>
-                  <div>
-                    {vaultItem.unit}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </CardList>
-          <div className='flex justify-center space-x-4 mt-3'>
+      <div className='space-y-20'>
+        <div className='space-y-10'>
+          <div>
+            <PageTitle
+              mainTitle={t('vault.vault_dashboard')}
+              subTitle={<TimerIncrement />} />
+            <BoldParagraph className='text-center'>{address}</BoldParagraph>
+            <CardListContainer>
+              <CardListHeader>Vault Stats</CardListHeader>
+              <CardList
+                className={clsx(
+                  'md:grid-cols-3',
+                  'lg:grid-cols-4',
+                  'gap-5',
+                  '2xl:gap-6')}>
+                {VAULT_ITEMS.map(vaultItem => (
+                  <CardListItem key={vaultItem.title}>
+                    <CardListItemHeader className={vaultItem.color}>
+                      {vaultItem.title}
+                    </CardListItemHeader>
+                    <CardListItemContent
+                      className={clsx(
+                        'text-2xl',
+                        'font-medium')}>
+                      {vaultItem.value}
+                    </CardListItemContent>
+                  </CardListItem>
+                ))}
+              </CardList>
+            </CardListContainer>
+          </div>
+          <div
+            className={clsx(
+              'max-w-sm',
+              'mx-auto',
+              'grid',
+              'grid-cols-2',
+              'gap-10'
+            )}>
             <Button
               variant='outline-success'
               // TODO: should not use inlined functions
               onClick={() => setUpdateCollateralModalStatus(CollateralUpdateStatus.Increase)}>
-              {t('vault.increase_collateral')}
+              {t('vault.deposit_collateral')}
             </Button>
             <Button
               variant='outline-danger'
@@ -237,20 +257,22 @@ function VaultDashboard(): JSX.Element {
               {t('vault.withdraw_collateral')}
             </Button>
           </div>
-        </>
-        <VaultIssueRequestsTable
-          totalIssueRequests={totalIssueRequests}
-          vaultAddress={address} />
-        <VaultRedeemRequestsTable
-          totalRedeemRequests={totalRedeemRequests}
-          vaultAddress={address} />
-        <ReplaceTable openModal={setShowRequestReplacementModal} />
-        <UpdateCollateralModal
-          onClose={closeUpdateCollateralModal}
-          status={updateCollateralModalStatus} />
-        <RequestReplacementModal
-          onClose={closeRequestReplacementModal}
-          show={showRequestReplacementModal} />
+        </div>
+        <div className='text-center'>
+          <VaultIssueRequestsTable
+            totalIssueRequests={totalIssueRequests}
+            vaultAddress={address} />
+          <VaultRedeemRequestsTable
+            totalRedeemRequests={totalRedeemRequests}
+            vaultAddress={address} />
+          <ReplaceTable openModal={setShowRequestReplacementModal} />
+          <UpdateCollateralModal
+            onClose={closeUpdateCollateralModal}
+            status={updateCollateralModalStatus} />
+          <RequestReplacementModal
+            onClose={closeRequestReplacementModal}
+            show={showRequestReplacementModal} />
+        </div>
       </div>
     </MainContainer>
   );

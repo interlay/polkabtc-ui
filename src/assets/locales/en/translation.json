@@ -254,7 +254,9 @@
       "timestamp": "Added to parachain",
       "block_number": "Block {{number}}",
       "relay_is": "BTC Relay is",
-      "blockstream_verify_link": "Verify on blockstream.info"
+      "blockstream_verify_link": "Verify on blockstream.info",
+      "parachain_block_height":"BTC Parachain block height",
+      "core_block_height":"Core block height"
     },
     "oracles": {
       "oracles": "Oracles",
@@ -292,7 +294,6 @@
       "add_collateral": "Add Collateral",
       "vault_dashboard": "Vault Dashboard",
       "locked_collateral": "Locked collateral",
-      "capacity": "Capacity",
       "tip_pending_btc": "BTC volume of in-progress issue requests.",
       "tip_collateralization": "Collateralization rate for locked BTC. 'Pending' includes in-progress issue requests.",
       "pending_table_subcell": "Pending: ",
@@ -301,6 +302,7 @@
       "total_collateral_locked": "Total Collateral Locked",
       "per_day_collateral_locked": "Collateral Locked Per Day",
       "total_vaults_chart": "Total number of vaults",
+      "capacity":"Capacity",
       "vaults": "Vaults"
     },
     "parachain": {
@@ -498,7 +500,7 @@
     "current_btc_address": "Current BTC Address:",
     "automatically_created": "Your new BTC address will be automatically created from your BTC wallet connected to the vault client when you click update.",
     "successfully_updated_collateral": "Successfully updated collateral",
-    "increase_collateral": "Increase Collateral",
+    "deposit_collateral": "Deposit Collateral",
     "current_total_collateral": "Current Total Collateral {{currentDOTCollateral}} DOT ",
     "new_total_collateral": "New Total Collateral",
     "update_collateral": "Update Collateral By",
@@ -511,7 +513,11 @@
     "capacity": "Capacity",
     "tip_pending_btc": "BTC volume of in-progress issue requests.",
     "tip_collateralization": "Collateralization rate for locked BTC. 'Pending' includes in-progress issue requests.",
-    "pending_table_subcell": "Pending: "
+    "pending_table_subcell": "Pending: ",
+    "locked_dot": "Locked Collateral DOT",
+    "fees_earned_dot":"Fees earned DOT",
+    "fees_earned_polkabtc":"Fees earned PolkaBTC",
+    "remaining_capacity": "Remaining PolkaBTC capacity"
   },
   "about": {
     "about_polkabtc": "About PolkaBTC",
