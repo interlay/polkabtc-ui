@@ -144,14 +144,15 @@ function Challenges(): JSX.Element {
       )}>
       <div className='w-3/4'>
         <PageTitle mainTitle={t('leaderboard.challenges_title')} />
-        <CardList>
+        <CardList className='grid-cols-3 gap-5 2xl:grid-cols-5 2xl:gap-6'>
           {CHALLENGE_ITEMS.map(challengeItem => (
-            <Card key={challengeItem.title}>
+            <Card
+              key={challengeItem.title}>
               <CardHeader className='flex'>
                 {t(challengeItem.title)}
                 {challengeItem.titleIcon}
               </CardHeader>
-              <CardContent>
+              <CardContent className='text-gray-500'>
                 {t(challengeItem.content)}
                 {challengeItem.contentLink && (
                   <InterlayLink
@@ -159,7 +160,8 @@ function Challenges(): JSX.Element {
                       'inline-flex',
                       'items-center',
                       'space-x-1',
-                      'ml-1'
+                      'ml-1',
+                      'text-interlayDodgerBlue'
                     )}
                     href={challengeItem.contentLink}
                     target='_blank'

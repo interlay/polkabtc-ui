@@ -5,6 +5,7 @@ import {
   FaDiscord
 } from 'react-icons/fa';
 import clsx from 'clsx';
+import tw from 'twin.macro';
 
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
@@ -49,27 +50,37 @@ const FEEDBACK_ITEMS = [
 const Feedback = (): JSX.Element => (
   <>
     {/* TODO: should use footer layout pattern */}
-    <MainContainer>
-      <PageTitle mainTitle='Feedback' />
-      <CardList>
-        {FEEDBACK_ITEMS.map(feedbackType => (
-          <Card key={feedbackType.title}>
-            <InterlayLink
-              href={feedbackType.link}
-              target='_blank'
-              rel='noopener noreferrer'
-              className={clsx(
-                'font-bold',
-                'flex',
-                'items-center',
-                'space-x-1'
-              )}>
-              <span>{feedbackType.title}</span>
-              {feedbackType.icon}
-            </InterlayLink>
-          </Card>
-        ))}
-      </CardList>
+    <MainContainer
+      className={clsx(
+        'flex',
+        'justify-center',
+        'fade-in-animation'
+      )}>
+      <div className='w-3/4'>
+        <PageTitle mainTitle='Feedback' />
+        <CardList className='grid-cols-3 gap-4 2xl:grid-cols-5'>
+          {FEEDBACK_ITEMS.map(feedbackType => (
+            <Card
+              key={feedbackType.title}
+              className='w-72'
+              twStyle={tw `justify-center items-center`}>
+              <InterlayLink
+                href={feedbackType.link}
+                target='_blank'
+                rel='noopener noreferrer'
+                className={clsx(
+                  'font-bold',
+                  'flex',
+                  'items-center',
+                  'space-x-1'
+                )}>
+                <span>{feedbackType.title}</span>
+                {feedbackType.icon}
+              </InterlayLink>
+            </Card>
+          ))}
+        </CardList>
+      </div>
     </MainContainer>
   </>
 );

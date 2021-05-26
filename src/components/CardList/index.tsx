@@ -13,22 +13,16 @@ const Card = ({
 }: Props & React.ComponentPropsWithRef<'li'>): JSX.Element => (
   <li
     // TODO: hardcoded
-    style={{ minHeight: 128 }}
+    style={{ minHeight: 90 }}
     css={[
-      tw`flex`,
-      tw`flex-col`,
-      tw `justify-center`,
-      tw`items-center`,
-      tw`lg:w-80`,
-      tw`px-4`,
-      tw`py-8`,
-      tw`my-4`,
-      tw`lg:m-2`,
-      tw`rounded`,
-      tw`border`,
-      tw`border-solid`,
-      tw`border-gray-300`,
-      tw`shadow-sm`,
+      tw `flex`,
+      tw `flex-col`,
+      tw `justify-start`,
+      tw `items-start`,
+      tw `w-72`,
+      tw `p-4`,
+      tw `rounded-lg`,
+      tw `bg-gray-100`,
       twStyle
     ]}
     {...rest} />
@@ -41,8 +35,8 @@ const CardHeader = ({
 }: React.ComponentPropsWithRef<'h2'>): JSX.Element => (
   <h6
     className={clsx(
-      'text-base',
-      'font-bold',
+      'text-sm',
+      'font-medium',
       'mb-2',
       className
     )}
@@ -52,7 +46,8 @@ const CardHeader = ({
 );
 
 const CardContent = (props: React.ComponentPropsWithRef<'div'>): JSX.Element => (
-  <div {...props} />
+  <div
+    {...props} />
 );
 
 const CardList = ({
@@ -61,9 +56,7 @@ const CardList = ({
 }: React.ComponentPropsWithRef<'ul'>): JSX.Element => (
   <ul
     className={clsx(
-      'lg:flex',
-      'lg:justify-center',
-      'lg:flex-wrap',
+      'grid',
       className
     )}
     {...rest} />

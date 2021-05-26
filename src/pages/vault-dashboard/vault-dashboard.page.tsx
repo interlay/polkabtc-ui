@@ -138,48 +138,50 @@ function VaultDashboard(): JSX.Element {
 
   const VAULT_ITEMS = [
     {
-      title: t('vault.locked_collateral'),
+      title: t('vault.locked_dot'),
       value: collateral,
-      unit: 'DOT'
+      color: 'interlayRose'
     },
     {
       title: t('locked_btc'),
       value: lockedBTC,
-      unit: 'BTC'
+      color: 'interlayTreePoppy'
     },
     {
       title: t('collateralization'),
-      value: `${safeRoundTwoDecimals(collateralization?.toString(), '∞')}%`
+      value: `${safeRoundTwoDecimals(collateralization?.toString(), '∞')}%`,
+      color: 'interlayDodgerBlue'
     },
     {
-      title: t('vault.capacity'),
+      title: t('vault.remaining_capacity'),
       value: `~${safeRoundTwoDecimals(capacity)}`,
-      unit: 'PolkaBTC'
+      color: 'interlayRose'
     },
     {
-      title: t('fees_earned'),
+      title: t('vault.fees_earned_polkabtc'),
       value: feesEarnedPolkaBTC.toString(),
-      unit: 'PolkaBTC'
+      color: 'interlayRose'
     },
     {
-      title: t('fees_earned'),
+      title: t('vault.fees_earned_dot'),
       value: feesEarnedDOT.toString(),
-      unit: 'DOT'
+      color: 'interlayRose'
     },
     {
       title: t('sla_score'),
-      value: safeRoundTwoDecimals(sla)
+      value: safeRoundTwoDecimals(sla),
+      color: 'interlayDodgerBlue'
     },
     {
       title: t('apy'),
       value: `~${safeRoundTwoDecimals(apy)}`,
-      unit: '%'
+      color: 'interlayDodgerBlue'
     }
   ];
 
   return (
     <MainContainer className='vault-dashboard-page'>
-      <div className='vault-container fade-in-animation'>
+      <div className='fade-in-animation'>
         <div className='stacked-wrapper'>
           <PageTitle
             mainTitle={t('vault.vault_dashboard')}
@@ -187,31 +189,29 @@ function VaultDashboard(): JSX.Element {
           <BoldParagraph>{address}</BoldParagraph>
         </div>
         <>
-          <CardList>
+          {/* The below components are used in Challenges page, css changes will affect accordingly */}
+          <CardList className='grid-cols-4 gap-5 2xl:gap-6'>
             {VAULT_ITEMS.map(vaultItem => (
               <Card
-                key={`${vaultItem.title}-${vaultItem?.unit}`}
-                twStyle={tw`lg:w-56`}>
-                <CardHeader>
+                key={`${vaultItem.title}`}
+                twStyle={tw `w-60`}>
+                <CardHeader className={`text-${vaultItem.color}`}>
                   {vaultItem.title}
                 </CardHeader>
-                <CardContent>
-                  <div className='text-4xl'>
-                    {vaultItem.value}
-                  </div>
+                <CardContent className='text-2xl font-medium'>
                   <div>
-                    {vaultItem.unit}
+                    {vaultItem.value}
                   </div>
                 </CardContent>
               </Card>
             ))}
           </CardList>
-          <div className='flex justify-center space-x-4 mt-3'>
+          <div className='flex justify-center space-x-10 mt-10'>
             <Button
               variant='outline-success'
               // TODO: should not use inlined functions
               onClick={() => setUpdateCollateralModalStatus(CollateralUpdateStatus.Increase)}>
-              {t('vault.increase_collateral')}
+              {t('vault.deposit_collateral')}
             </Button>
             <Button
               variant='outline-danger'
