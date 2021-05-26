@@ -62,7 +62,6 @@ const Feedback = (): JSX.Element => (
           {FEEDBACK_ITEMS.map(feedbackType => (
             <Card
               key={feedbackType.title}
-              className='w-72'
               twStyle={tw `justify-center items-center`}>
               <InterlayLink
                 href={feedbackType.link}

@@ -30,7 +30,7 @@ import IssueTable from './issue-table/issue-table';
 import RedeemTable from './redeem-table/redeem-table';
 import ReplaceTable from './replace-table/replace-table';
 import { StoreType } from 'common/types/util.types';
-import { safeRoundTwoDecimals } from 'common/utils/utils';
+import { safeRoundTwoDecimals, displayBtcAmount, safeRoundFiveDecimals } from 'common/utils/utils';
 import {
   updateCollateralizationAction,
   updateCollateralAction,
@@ -139,12 +139,12 @@ function VaultDashboard(): JSX.Element {
   const VAULT_ITEMS = [
     {
       title: t('vault.locked_dot'),
-      value: collateral,
+      value: safeRoundFiveDecimals(collateral),
       color: 'interlayRose'
     },
     {
       title: t('locked_btc'),
-      value: lockedBTC,
+      value: displayBtcAmount(lockedBTC),
       color: 'interlayTreePoppy'
     },
     {
@@ -154,17 +154,17 @@ function VaultDashboard(): JSX.Element {
     },
     {
       title: t('vault.remaining_capacity'),
-      value: `~${safeRoundTwoDecimals(capacity)}`,
+      value: displayBtcAmount(capacity),
       color: 'interlayRose'
     },
     {
       title: t('vault.fees_earned_polkabtc'),
-      value: feesEarnedPolkaBTC.toString(),
+      value: displayBtcAmount(feesEarnedPolkaBTC),
       color: 'interlayRose'
     },
     {
       title: t('vault.fees_earned_dot'),
-      value: feesEarnedDOT.toString(),
+      value: safeRoundFiveDecimals(feesEarnedDOT),
       color: 'interlayRose'
     },
     {
