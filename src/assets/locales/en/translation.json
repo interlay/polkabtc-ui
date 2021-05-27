@@ -292,6 +292,7 @@
       "withdraw_collateral": "Withdraw Collateral",
       "add_collateral": "Add Collateral",
       "vault_dashboard": "Vault Dashboard",
+      "locked_collateral": "Locked collateral",
       "tip_pending_btc": "BTC volume of in-progress issue requests.",
       "tip_collateralization": "Collateralization rate for locked BTC. 'Pending' includes in-progress issue requests.",
       "pending_table_subcell": "Pending: ",
@@ -300,6 +301,7 @@
       "total_collateral_locked": "Total Collateral Locked",
       "per_day_collateral_locked": "Collateral Locked Per Day",
       "total_vaults_chart": "Total number of vaults",
+      "capacity":"Capacity",
       "vaults": "Vaults"
     },
     "parachain": {
