@@ -158,7 +158,8 @@ function VaultDashboard(): JSX.Element {
       title: t('collateralization'),
       value: `${safeRoundTwoDecimals(collateralization?.toString(), '∞')}%`,
       color: 'interlayDodgerBlue-800'
-    }, {
+    },
+    {
       title: t('vault.fees_earned_polkabtc'),
       value: displayBtcAmount(feesEarnedPolkaBTC),
       color: 'interlayRose-800'
