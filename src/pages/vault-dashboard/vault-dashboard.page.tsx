@@ -12,7 +12,6 @@ import {
   planckToDOT
 } from '@interlay/polkabtc';
 import { useTranslation } from 'react-i18next';
-import tw from 'twin.macro';
 
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
@@ -156,44 +155,41 @@ function VaultDashboard(): JSX.Element {
 
   const VAULT_ITEMS = [
     {
-      title: t('vault.locked_dot'),
-      value: safeRoundFiveDecimals(collateral),
-      color: 'interlayRose'
-    },
-    {
-      title: t('locked_btc'),
-      value: displayBtcAmount(lockedBTC),
-      color: 'interlayTreePoppy'
-    },
-    {
       title: t('collateralization'),
       value: `${safeRoundTwoDecimals(collateralization?.toString(), '∞')}%`,
-      color: 'interlayDodgerBlue'
-    },
-    {
-      title: t('vault.remaining_capacity'),
-      value: displayBtcAmount(capacity),
-      color: 'interlayRose'
-    },
-    {
+      color: 'interlayDodgerBlue-800'
+    }, {
       title: t('vault.fees_earned_polkabtc'),
       value: displayBtcAmount(feesEarnedPolkaBTC),
-      color: 'interlayRose'
+      color: 'interlayRose-800'
     },
     {
       title: t('vault.fees_earned_dot'),
       value: safeRoundFiveDecimals(feesEarnedDOT),
-      color: 'interlayRose'
+      color: 'interlayRose-800'
     },
     {
       title: t('sla_score'),
       value: safeRoundTwoDecimals(sla),
-      color: 'interlayDodgerBlue'
+      color: 'interlayDodgerBlue-800'
+    }, {
+      title: t('vault.locked_dot'),
+      value: safeRoundFiveDecimals(collateral),
+      color: 'interlayRose-800'
+    },
+    {
+      title: t('locked_btc'),
+      value: displayBtcAmount(lockedBTC),
+      color: 'interlayTreePoppy-700'
+    }, {
+      title: t('vault.remaining_capacity'),
+      value: displayBtcAmount(capacity),
+      color: 'interlayRose-800'
     },
     {
       title: t('apy'),
       value: `~${safeRoundTwoDecimals(apy)}`,
-      color: 'interlayDodgerBlue'
+      color: 'interlayDodgerBlue-800'
     }
   ];
 
@@ -208,11 +204,10 @@ function VaultDashboard(): JSX.Element {
         </div>
         <>
           {/* The below components are used in Challenges page, css changes will affect accordingly */}
-          <CardList className='grid-cols-4 gap-5 2xl:gap-6'>
+          <CardList className='grid-cols-3 lg:grid-cols-4 gap-5 2xl:gap-6'>
             {VAULT_ITEMS.map(vaultItem => (
               <Card
-                key={`${vaultItem.title}`}
-                twStyle={tw `w-60`}>
+                key={`${vaultItem.title}`}>
                 <CardHeader className={`text-${vaultItem.color}`}>
                   {vaultItem.title}
                 </CardHeader>
@@ -238,19 +233,21 @@ function VaultDashboard(): JSX.Element {
             </Button>
           </div>
         </>
-        <VaultIssueRequestsTable
-          totalIssueRequests={totalIssueRequests}
-          vaultAddress={address} />
-        <VaultRedeemRequestsTable
-          totalRedeemRequests={totalRedeemRequests}
-          vaultAddress={address} />
-        <ReplaceTable openModal={setShowRequestReplacementModal} />
-        <UpdateCollateralModal
-          onClose={closeUpdateCollateralModal}
-          status={updateCollateralModalStatus} />
-        <RequestReplacementModal
-          onClose={closeRequestReplacementModal}
-          show={showRequestReplacementModal} />
+        <div className='mt-20'>
+          <VaultIssueRequestsTable
+            totalIssueRequests={totalIssueRequests}
+            vaultAddress={address} />
+          <VaultRedeemRequestsTable
+            totalRedeemRequests={totalRedeemRequests}
+            vaultAddress={address} />
+          <ReplaceTable openModal={setShowRequestReplacementModal} />
+          <UpdateCollateralModal
+            onClose={closeUpdateCollateralModal}
+            status={updateCollateralModalStatus} />
+          <RequestReplacementModal
+            onClose={closeRequestReplacementModal}
+            show={showRequestReplacementModal} />
+        </div>
       </div>
     </MainContainer>
   );
