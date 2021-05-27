@@ -204,7 +204,7 @@ function VaultDashboard(): JSX.Element {
         </div>
         <>
           {/* The below components are used in Challenges page, css changes will affect accordingly */}
-          <CardList className='grid-cols-3 lg:grid-cols-4 gap-5 2xl:gap-6'>
+          <CardList className='md:grid-cols-3 lg:grid-cols-4 gap-5 2xl:gap-6'>
             {VAULT_ITEMS.map(vaultItem => (
               <Card
                 key={`${vaultItem.title}`}>

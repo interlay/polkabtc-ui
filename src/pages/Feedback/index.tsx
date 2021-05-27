@@ -58,7 +58,7 @@ const Feedback = (): JSX.Element => (
       )}>
       <div className='w-3/4'>
         <PageTitle mainTitle='Feedback' />
-        <CardList className='grid-cols-3 gap-4 2xl:grid-cols-5'>
+        <CardList className='md:grid-cols-3 gap-4 2xl:grid-cols-5'>
           {FEEDBACK_ITEMS.map(feedbackType => (
             <Card
               key={feedbackType.title}

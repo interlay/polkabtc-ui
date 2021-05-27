@@ -19,7 +19,7 @@ const Card = ({
       tw `flex-col`,
       tw `justify-start`,
       tw `items-start`,
-      tw `p-4`,
+      tw `p-5`,
       tw `rounded-lg`,
       tw `bg-gray-100`,
       twStyle
