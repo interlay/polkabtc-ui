@@ -22,6 +22,12 @@ module.exports = {
         type: 'javascript/auto'
       });
 
+      // Fixes dtrace-provider compilation bug described here:
+      // https://github.com/chrisa/node-dtrace-provider/issues/114
+      webpackConfig.externals = [
+        'dtrace-provider'
+      ];
+
       return webpackConfig;
     }
   }

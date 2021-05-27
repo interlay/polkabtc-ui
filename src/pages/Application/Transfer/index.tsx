@@ -7,7 +7,6 @@ import {
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Big from 'big.js';
-import { btcToSat } from '@interlay/polkabtc';
 import clsx from 'clsx';
 import { toast } from 'react-toastify';
 
@@ -32,6 +31,8 @@ import STATUSES from 'utils/constants/statuses';
 import { ReactComponent as PolkaBTCLogoIcon } from 'assets/img/polkabtc-logo.svg';
 import { ReactComponent as AcalaLogoIcon } from 'assets/img/acala-logo.svg';
 import { ReactComponent as PlasmLogoIcon } from 'assets/img/plasm-logo.svg';
+import { ReactComponent as EthereumLogoIcon } from 'assets/img/ethereum-logo.svg';
+import { ReactComponent as CosmosLogoIcon } from 'assets/img/cosmos-logo.svg';
 
 const POLKA_BTC_AMOUNT = 'polka-btc-amount';
 const DOT_ADDRESS = 'dot-address';
@@ -44,7 +45,9 @@ type TransferForm = {
 const NETWORK_TYPES = Object.freeze({
   polkaBTC: 'polka-btc',
   acala: 'acala',
-  plasm: 'plasm'
+  plasm: 'plasm',
+  ethereum: 'ethereum',
+  cosmos: 'cosmos'
 });
 
 const NETWORK_ITEMS = [
@@ -73,6 +76,26 @@ const NETWORK_ITEMS = [
         height={20} />
     ),
     title: 'Plasm',
+    disabled: true
+  },
+  {
+    type: NETWORK_TYPES.ethereum,
+    icon: (
+      <EthereumLogoIcon
+        width={20}
+        height={20} />
+    ),
+    title: 'Ethereum',
+    disabled: true
+  },
+  {
+    type: NETWORK_TYPES.cosmos,
+    icon: (
+      <CosmosLogoIcon
+        width={20}
+        height={20} />
+    ),
+    title: 'Cosmos',
     disabled: true
   }
 ];
@@ -116,7 +139,7 @@ const Transfer = (): JSX.Element => {
   const onSubmit = async (data: TransferForm) => {
     try {
       setSubmitStatus(STATUSES.PENDING);
-      await window.polkaBTC.treasury.transfer(data[DOT_ADDRESS], btcToSat(data[POLKA_BTC_AMOUNT]));
+      await window.polkaBTC.treasury.transfer(data[DOT_ADDRESS], new Big(data[POLKA_BTC_AMOUNT]));
       // TODO: should be managed by a dedicated cache mechanism
       dispatch(updateBalancePolkaBTCAction(new Big(balancePolkaBTC).sub(new Big(data[POLKA_BTC_AMOUNT])).toString()));
       updateBalances(dispatch, data[DOT_ADDRESS], balanceDOT, balancePolkaBTC);

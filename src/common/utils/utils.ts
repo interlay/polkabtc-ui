@@ -1,7 +1,6 @@
 import { RedeemRequest } from '../types/redeem.types';
 import { IssueRequest } from '../types/issue.types';
 import {
-  satToBTC,
   uint8ArrayToString,
   bitcoin,
   reverseEndianness,
@@ -13,8 +12,7 @@ import { Dispatch } from 'redux';
 import { updateBalanceDOTAction, updateBalancePolkaBTCAction } from '../actions/general.actions';
 import Big from 'big.js';
 import { TableDisplayParams, RelayedBlock } from '../types/util.types';
-import { AccountId, Balance } from '@polkadot/types/interfaces/runtime';
-import BN from 'bn.js';
+import { AccountId } from '@polkadot/types/interfaces/runtime';
 
 // TODO: should be one module
 function safeRoundTwoDecimals(input: string | number | undefined, defaultValue = '0'): string {
@@ -54,13 +52,19 @@ function formatDateTimePrecise(date: Date): string {
   return date.toDateString().substring(4) + ' ' + date.toTimeString().substring(0, 8);
 }
 
+// TODO: replace these functions with internationalization functions
 // always round USD amounts to two decimals
-function getUsdAmount(amount: string, rate: number): string {
+function getUsdAmount(amount: string | Big, rate: number): string {
   return new Big(amount).mul(new Big(rate)).toFixed(2).toString();
 }
 
-function displayBtcAmount(amount: string | number): string {
+function displayBtcAmount(amount: string | number | Big): string {
+  Big.NE = -10;
   return new Big(amount).round(8).toString();
+}
+
+function displayDotAmount(amount: string | number | Big): string {
+  return new Big(amount).round(5).toString();
 }
 
 /**
@@ -112,12 +116,11 @@ const updateBalances = async (
   currentBalancePolkaBTC: string
 ): Promise<void> => {
   const accountId = window.polkaBTC.api.createType(ACCOUNT_ID_TYPE_NAME, address);
-  const balancePolkaSAT = await window.polkaBTC.treasury.balancePolkaBTC(accountId);
-  const balanceDOT = await window.polkaBTC.collateral.balance(accountId);
-  const balancePolkaBTC = satToBTC(balancePolkaSAT.toString());
+  const balancePolkaBTC = (await window.polkaBTC.treasury.balance(accountId)).toString();
+  const balanceDOT = (await window.polkaBTC.collateral.balance(accountId)).toString();
 
-  if (currentBalanceDOT !== balanceDOT.toString()) {
-    dispatch(updateBalanceDOTAction(balanceDOT.toString()));
+  if (currentBalanceDOT !== balanceDOT) {
+    dispatch(updateBalanceDOTAction(balanceDOT));
   }
 
   if (currentBalancePolkaBTC !== balancePolkaBTC) {
@@ -150,7 +153,7 @@ const copyToClipboard = (text: string): void => {
   navigator.clipboard.writeText(text);
 };
 
-const getRandomVaultIdWithCapacity = (vaults: [AccountId, Balance][], requiredCapacity: BN): string => {
+const getRandomVaultIdWithCapacity = (vaults: [AccountId, Big][], requiredCapacity: Big): string => {
   const filteredVaults = vaults.filter(vault => vault[1].gte(requiredCapacity));
   return filteredVaults.length > 0 ? getRandomArrayElement(filteredVaults)[0].toString() : '';
 };
@@ -169,6 +172,7 @@ export {
   formatDateTimePrecise,
   getUsdAmount,
   displayBtcAmount,
+  displayDotAmount,
   isPositiveNumeric,
   range,
   BtcNetwork,

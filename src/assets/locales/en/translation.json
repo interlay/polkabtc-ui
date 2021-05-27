@@ -197,7 +197,8 @@
     "compensation_payment": "Compensation for inconvenience",
     "compensation_burn": "Received for burning PolkaBTC",
     "retry_new_redeem": "You can now create a new redeem request with another vault.",
-    "premium_redeem_info": "If you select premium redeem, you will try to redeem with a vault that is below the secure collateral threshold. This operation has a higher risk since the vault might be liquidated. For this higher risk, you will receive a compensation."
+    "premium_redeem_info": "If you select premium redeem, you will try to redeem with a vault that is below the secure collateral threshold. This operation has a higher risk since the vault might be liquidated. For this higher risk, you will receive a compensation.",
+    "vault_has_time_to_complete": "Time until the Vault has to complete the transaction: "
   },
   "transfer_page": {
     "successfully_transferred": "Successfully transferred.",
@@ -332,9 +333,9 @@
     "fully_decentralized": "PolkaBTC is a fully decentralised system. Please make sure you send the right amount of BTC, we cannot guarantee that the vault will return the additional BTC that you sent by mistake.",
     "view_parachain_block": "View Parachain Block",
     "view_on_block_explorer": "View on Block Explorer",
-    "mint_polka_by_wrapping": "Mint PolkaBTC by wrapping BTC 1:1",
+    "mint_polka_by_wrapping": "Mint PolkaBTC by wrapping BTC",
     "security_deposit": "Security Deposit",
-    "receive_polkabtc_tokens": "You will now receive your 1:1 BTC-backed PolkaBTC tokens. If this does not happen automatically within a few minutes, click the button below.",
+    "receive_polkabtc_tokens": "You will now receive your BTC-backed PolkaBTC tokens. If this does not happen automatically within a few minutes, click the button below.",
     "issue_requests": "Issue Requests",
     "recent_requests": "Recent Requests",
     "must_select_account_warning": "No account selected. Please select an account to proceed to issue PolkaBTC.",
@@ -358,7 +359,6 @@
     "validation_max_value": "The maximum amount you can issue (per request) during the beta testnet is 1.0 PolkaBTC. There will be NO restrictions on mainnet. Please enter a lower amount.",
     "validation_min_value": "Please enter an amount greater than Bitcoin dust limit (",
     "enter_valid_amount": "Please enter a valid amount.",
-    "transaction_not_included": "Transaction not yet included in Bitcoin.",
     "proof_data": "Fetching proof data for Bitcoin transaction: {{txId}}",
     "executing": "Executing issue request: {{id}}",
     "execute_failed": "Execute failed.",
@@ -416,7 +416,9 @@
     "refund_requested_vault": "We have requested the vault",
     "refund_vault_to_return": "to return",
     "refund_vault_to_address": "back to your address",
-    "warning_mbtc_wallets": "Warning: Some Bitcoin wallets display values in mBTC. Please ensure you send the correct amount:"
+    "warning_mbtc_wallets": "Warning: Some Bitcoin wallets display values in mBTC. Please ensure you send the correct amount:",
+    "tooltip_bridge_fee": "The bridge fee is paid to the Vaults, Relayers, and maintainers of the system.",
+    "tooltip_security_deposit": "The security deposit is a denial-of-service protection for Vaults that is refunded to you after the minting process is completed."
   },
   "landing": {
     "defi_ecosystem": "Bitcoin for Polkadot's DeFi Ecosystem",

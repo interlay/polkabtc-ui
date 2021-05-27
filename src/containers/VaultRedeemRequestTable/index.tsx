@@ -1,4 +1,3 @@
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import * as React from 'react';
@@ -31,17 +30,20 @@ import {
 import { DashboardRequestInfo } from 'common/types/redeem.types';
 import { QUERY_PARAMETERS } from 'utils/constants/links';
 import { BTC_ADDRESS_API } from 'config/bitcoin';
+import { RedeemColumns } from '@interlay/polkabtc-stats';
 import * as constants from '../../constants';
 import STATUSES from 'utils/constants/statuses';
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 interface Props {
   totalRedeemRequests: number;
+  vaultAddress: string;
 }
 
-const RedeemRequestsTable = ({
-  totalRedeemRequests
+const VaultRedeemRequestsTable = ({
+  totalRedeemRequests,
+  vaultAddress
 }: Props): JSX.Element | null => {
   const query = useQuery();
   const selectedPage: number = query.get(QUERY_PARAMETERS.page) || 1;
@@ -52,6 +54,11 @@ const RedeemRequestsTable = ({
   const [error, setError] = React.useState<Error | null>(null);
   const { t } = useTranslation();
 
+  const redeemRequestFilter = React.useMemo(
+    () => [{ column: RedeemColumns.VaultId, value: vaultAddress }], // filter requests by vault address
+    [vaultAddress]
+  );
+
   React.useEffect(() => {
     if (!statsApi) return;
     if (!selectedPage) return;
@@ -61,13 +68,13 @@ const RedeemRequestsTable = ({
     try {
       (async () => {
         setStatus(STATUSES.PENDING);
-        const response = await statsApi.getRedeems(
+        const response = await statsApi.getFilteredRedeems(
           selectedPageIndex,
           PAGE_SIZE,
           undefined,
           undefined,
-          // TODO: should double-check
-          constants.BITCOIN_NETWORK as BtcNetworkName
+          constants.BITCOIN_NETWORK as BtcNetworkName, // Not sure why cast is necessary here, but TS complains
+          redeemRequestFilter
         );
         setStatus(STATUSES.RESOLVED);
         setData(response.data);
@@ -78,11 +85,19 @@ const RedeemRequestsTable = ({
     }
   }, [
     statsApi,
-    selectedPage
+    selectedPage,
+    redeemRequestFilter
   ]);
 
   const columns = React.useMemo(
     () => [
+      {
+        Header: t('id'),
+        accessor: 'id',
+        classNames: [
+          'text-center'
+        ]
+      },
       {
         Header: t('date'),
         accessor: 'timestamp',
@@ -98,24 +113,17 @@ const RedeemRequestsTable = ({
         }
       },
       {
-        Header: t('redeem_page.amount'),
-        accessor: 'amountPolkaBTC',
-        classNames: [
-          'text-right'
-        ]
-      },
-      {
-        Header: t('parachain_block'),
+        Header: t('vault.creation_block'),
         accessor: 'creation',
         classNames: [
           'text-right'
         ]
       },
       {
-        Header: t('issue_page.vault_dot_address'),
-        accessor: 'vaultDotAddress',
+        Header: t('user'),
+        accessor: 'requester',
         classNames: [
-          'text-left'
+          'text-center'
         ],
         Cell: function FormattedCell({ value }) {
           return (
@@ -126,7 +134,14 @@ const RedeemRequestsTable = ({
         }
       },
       {
-        Header: t('redeem_page.output_BTC_address'),
+        Header: t('issue_page.amount'),
+        accessor: 'amountPolkaBTC',
+        classNames: [
+          'text-right'
+        ]
+      },
+      {
+        Header: t('redeem_page.btc_destination_address'),
         accessor: 'btcAddress',
         classNames: [
           'text-left'
@@ -202,7 +217,7 @@ const RedeemRequestsTable = ({
           'text-2xl',
           'font-bold'
         )}>
-        {t('issue_page.recent_requests')}
+        {t('redeem_requests')}
       </h2>
       {(status === STATUSES.IDLE || status === STATUSES.PENDING) && (
         <div
@@ -273,4 +288,4 @@ const RedeemRequestsTable = ({
   );
 };
 
-export default RedeemRequestsTable;
+export default VaultRedeemRequestsTable;
