@@ -38,7 +38,7 @@ function RedeemModal(props: RedeemModalProps): ReactElement {
           <div className='redeem-modal-horizontal-line' />
           <Modal.Body>
             <div className='row'>
-              <div className='col-xl-6 col-lg-12 justify-content-center'>
+              <div className='col-xl-6 col-lg-12 justify-center'>
                 <div className='redeem-amount'>
                   <span className='wizard-number'>{request.amountPolkaBTC}</span>&nbsp;PolkaBTC
                 </div>
@@ -59,6 +59,21 @@ function RedeemModal(props: RedeemModalProps): ReactElement {
                     {request.fee} BTC
                     <div className='send-price'>
                       {'~ $' + getUsdAmount(request.fee, prices.bitcoin.usd)}
+                    </div>
+                  </div>
+                </div>
+                <div className='step-item row'>
+                  <div className='col-6 temp-text-left'>{t('bitcoin_network_fee')}</div>
+                  <div className='col-6'>
+                    <BitcoinLogoIcon
+                      className='inline-block'
+                      width={23}
+                      height={23} />
+                    {' '}
+                    &nbsp;
+                    {request.btcTransferFee} BTC
+                    <div className='send-price'>
+                      {'~ $' + getUsdAmount(request.btcTransferFee, prices.bitcoin.usd)}
                     </div>
                   </div>
                 </div>
@@ -86,7 +101,7 @@ function RedeemModal(props: RedeemModalProps): ReactElement {
                   <div className='col-6 right-text'>{request.creation}</div>
                 </div>
                 <div className='step-item row'>
-                  <div className='col-6 temp-text-left'>{t('issue_page.vault_dot_address_modal')}</div>
+                  <div className='col-6 temp-text-left'>{t('issue_page.vault_dot_address')}</div>
                   <div className='col-6 right-text'>{shortAddress(request.vaultDOTAddress || '')}</div>
                 </div>
               </div>

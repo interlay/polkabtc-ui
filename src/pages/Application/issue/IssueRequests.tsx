@@ -17,15 +17,17 @@ import { showAccountModalAction } from 'common/actions/general.actions';
 function IssueRequests(): JSX.Element {
   const { address, extensions } = useSelector((state: StoreType) => state.general);
   const issueRequests = useSelector((state: StoreType) => state.issue.issueRequests).get(address) || [];
-  const [showModal, setShowModal] = useState(false);
+  const [issueModalOpen, setIssueModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const closeModal = () => setShowModal(false);
+  const handleIssueModalClose = () => {
+    setIssueModalOpen(false);
+  };
 
   const openWizard = () => {
     if (extensions.length && address) {
-      setShowModal(true);
+      setIssueModalOpen(true);
     } else {
       dispatch(showAccountModalAction(true));
     }
@@ -35,7 +37,7 @@ function IssueRequests(): JSX.Element {
     switch (status) {
     case IssueRequestStatus.RequestedRefund:
     case IssueRequestStatus.Completed: {
-      return <FaCheck />;
+      return <FaCheck className='inline-block' />;
     }
     case IssueRequestStatus.Cancelled:
     case IssueRequestStatus.Expired: {
@@ -48,7 +50,7 @@ function IssueRequests(): JSX.Element {
       );
     }
     default: {
-      return <FaHourglass />;
+      return <FaHourglass className='inline-block' />;
     }
     }
   };
@@ -63,7 +65,8 @@ function IssueRequests(): JSX.Element {
       className={clsx(
         'container',
         'mt-12',
-        'mx-auto'
+        'mx-auto',
+        'text-center'
       )}>
       {issueRequests?.length > 0 && (
         <>
@@ -100,7 +103,7 @@ function IssueRequests(): JSX.Element {
                     className='table-row-opens-modal'>
                     <td>
                       {request.timestamp ?
-                        formatDateTimePrecise(new Date(request.timestamp)) :
+                        formatDateTimePrecise(new Date(Number(request.timestamp))) :
                         t('pending')}
                     </td>
                     <td>
@@ -124,8 +127,8 @@ function IssueRequests(): JSX.Element {
             </tbody>
           </Table>
           <IssueModal
-            show={showModal}
-            onClose={closeModal} />
+            open={issueModalOpen}
+            onClose={handleIssueModalClose} />
         </>
       )}
     </div>

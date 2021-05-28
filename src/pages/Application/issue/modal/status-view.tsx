@@ -11,7 +11,7 @@ import { updateBalancePolkaBTCAction } from '../../../../common/actions/general.
 import { shortAddress } from '../../../../common/utils/utils';
 import Big from 'big.js';
 import InterlayLink from 'components/UI/InterlayLink';
-import { BTC_TRANSACTION_API } from 'config/blockchain';
+import { BTC_TRANSACTION_API } from 'config/bitcoin';
 
 type StatusViewProps = {
   request: IssueRequest;
@@ -21,12 +21,21 @@ export default function StatusView(props: StatusViewProps): ReactElement {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { polkaBtcLoaded, balancePolkaBTC } = useSelector((state: StoreType) => state.general);
-  const [stableBitcoinConfirmations, setStableBitcoinConfirmations] = useState(0);
+  const [stableBitcoinConfirmations, setStableBitcoinConfirmations] = useState(1);
+  const [stableParachainConfirmations, setStableParachainConfirmations] = useState(100);
+  const [requestConfirmations, setRequestConfirmations] = useState(0);
   const [executePending, setExecutePending] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setStableBitcoinConfirmations(await window.polkaBTC.btcRelay.getStableBitcoinConfirmations());
+      const [btcConf, paraConf, paraHeight] = await Promise.all([
+        await window.polkaBTC.btcRelay.getStableBitcoinConfirmations(),
+        await window.polkaBTC.btcRelay.getStableParachainConfirmations(),
+        await window.polkaBTC.system.getCurrentActiveBlockNumber()
+      ]);
+      setStableBitcoinConfirmations(btcConf);
+      setStableParachainConfirmations(paraConf);
+      setRequestConfirmations(paraHeight - Number(props.request.creation));
     };
     fetchData();
   });
@@ -35,57 +44,17 @@ export default function StatusView(props: StatusViewProps): ReactElement {
     if (!polkaBtcLoaded) return;
     setExecutePending(true);
 
-    let [merkleProof, rawTx] = [request.merkleProof, request.rawTransaction];
-    let transactionData = false;
-    let txId = request.btcTxId;
     try {
-      // Get proof data from bitcoin
-      if (txId === '') {
-        txId = await window.polkaBTC.btcCore.getTxIdByRecipientAddress(
-          request.vaultBTCAddress,
-          request.requestedAmountPolkaBTC
-        );
-      }
-      [merkleProof, rawTx] = await Promise.all([
-        window.polkaBTC.btcCore.getMerkleProof(txId),
-        window.polkaBTC.btcCore.getRawTransaction(txId)
-      ]);
-      transactionData = true;
-    } catch (err) {
-      toast.error(t('issue_page.transaction_not_included'));
-      setExecutePending(false);
-    }
-
-    if (!transactionData) return;
-    try {
-      const provenReq = request;
-      provenReq.merkleProof = merkleProof;
-      provenReq.rawTransaction = rawTx;
-      dispatch(updateIssueRequestAction(provenReq));
-
-      const txIdBuffer = Buffer.from(txId, 'hex').reverse();
-
-      // Prepare types for polkadot
-      const parsedIssuedId = window.polkaBTC.api.createType('H256', '0x' + provenReq.id);
-      const parsedTxId = window.polkaBTC.api.createType('H256', txIdBuffer);
-      const parsedMerkleProof = window.polkaBTC.api.createType('Bytes', '0x' + merkleProof);
-      const parsedRawTx = window.polkaBTC.api.createType('Bytes', rawTx);
-
       // Execute issue
-      await window.polkaBTC.issue.execute(
-        parsedIssuedId,
-        parsedTxId,
-        parsedMerkleProof,
-        parsedRawTx
-      );
+      await window.polkaBTC.issue.execute(request.id, request.btcTxId);
 
-      const completedReq = provenReq;
+      const completedReq = request;
       completedReq.status = IssueRequestStatus.Completed;
 
       dispatch(
         updateBalancePolkaBTCAction(
           new Big(balancePolkaBTC)
-            .add(new Big(provenReq.issuedAmountBtc || provenReq.requestedAmountPolkaBTC))
+            .add(new Big(request.issuedAmountBtc || request.requestedAmountPolkaBTC))
             .toString()
         )
       );
@@ -171,16 +140,16 @@ export default function StatusView(props: StatusViewProps): ReactElement {
               <i className='fas fa-times-circle canceled-circle'></i>
             </div>
           </div>
-          <div className='row justify-content-center mt-4'>
+          <div className='row justify-center mt-4'>
             <div className='col-9 status-description'>{t('issue_page.you_did_not_send')}</div>
           </div>
-          <div className='row justify-content-center mt-5'>
+          <div className='row justify-center mt-5'>
             <div className='col-9 note-title'>
               {t('note')}&nbsp;
               <i className='fas fa-exclamation-circle'></i>
             </div>
           </div>
-          <div className='row justify-content-center'>
+          <div className='row justify-center'>
             <div className='col-9 note-text'>{t('issue_page.contact_team')}</div>
           </div>
         </>
@@ -198,7 +167,10 @@ export default function StatusView(props: StatusViewProps): ReactElement {
                 <div>{t('issue_page.waiting_for')}</div>
                 <div>{t('confirmations')}</div>
                 <div className='number-of-confirmations'>
-                  {props.request.confirmations + '/' + stableBitcoinConfirmations}
+                  {`${props.request.confirmations}/${stableBitcoinConfirmations}`}
+                </div>
+                <div className='number-of-confirmations'>
+                  {`${requestConfirmations}/${stableParachainConfirmations}`}
                 </div>
               </div>
               <div className='row btc-transaction-wrapper'>
@@ -273,10 +245,10 @@ export default function StatusView(props: StatusViewProps): ReactElement {
                   </InterlayLink>
                 </div>
               </div>
-              <div className='row mt-5 justify-content-center'>
+              <div className='row mt-5 justify-center'>
                 <div className='col-10'>{t('issue_page.receive_polkabtc_tokens')}</div>
               </div>
-              <div className='row mt-3 justify-content-center'>
+              <div className='row mt-3 justify-center'>
                 <div className='col-6 text-center'>
                   <ButtonMaybePending
                     isPending={executePending}

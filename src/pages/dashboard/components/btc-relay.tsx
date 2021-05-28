@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { StoreType } from '../../../common/types/util.types';
 import { useTranslation } from 'react-i18next';
 import { StyledLinkData } from '../../../common/components/dashboard-table/dashboard-table';
-import { BTC_BLOCK_API } from 'config/blockchain';
+import { BTC_BLOCK_API } from 'config/bitcoin';
 import { PAGES } from 'utils/constants/links';
 import DashboardCard from 'pages/dashboard/DashboardCard';
 import clsx from 'clsx';
@@ -50,7 +50,7 @@ const BtcRelay = ({ linkButton, displayBlockstreamData }: BtcRelayProps): ReactE
   useEffect(() => {
     (async () => {
       try {
-        const hash = await window.polkaBTC.btcCore.getLatestBlock();
+        const hash = await window.polkaBTC.electrsAPI.getLatestBlock();
         setBlockstreamTip(hash);
       } catch (e) {
         console.log(e);

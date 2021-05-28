@@ -15,7 +15,7 @@ import clsx from 'clsx';
 import { VaultData } from '@interlay/polkabtc-stats'; // TODO: should do tree-shaking
 
 import EllipsisLoader from 'components/EllipsisLoader';
-import ErrorMessage from 'components/ErrorMessage';
+import ErrorHandler from 'components/ErrorHandler';
 import InterlayTable, {
   InterlayTableContainer,
   InterlayThead,
@@ -68,7 +68,7 @@ const VaultScoresTable = ({
     (async () => {
       try {
         setStatus(STATUSES.PENDING);
-        const response = await statsApi.getVaults(challengeTime);
+        const response = await statsApi.getChallengeVaults(challengeTime);
         const sortedVaults = response.data.sort((a, b) => b.lifetime_sla - a.lifetime_sla);
         const transformedVaults = sortedVaults.map(vault => ({
           ...vault,
@@ -175,9 +175,9 @@ const VaultScoresTable = ({
     );
   }
 
-  if (status === STATUSES.REJECTED) {
+  if (status === STATUSES.REJECTED && error) {
     return (
-      <ErrorMessage message={error?.message} />
+      <ErrorHandler error={error} />
     );
   }
 

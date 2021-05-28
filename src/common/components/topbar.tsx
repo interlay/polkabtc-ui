@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import {
   Navbar,
@@ -28,10 +29,10 @@ import {
   PAGES,
   QUERY_PARAMETERS
 } from 'utils/constants/links';
-import { ACCOUNT_ID_TYPE_NAME } from '../../constants';
-import TAB_TYPES from 'utils/constants/tab-types';
-import { ReactComponent as PolkabtcLogoIcon } from 'assets/img/polkabtc/polkabtc-logo.svg';
-import { ReactComponent as NewMarkIcon } from 'assets/img/icons/new-mark.svg';
+import { ACCOUNT_ID_TYPE_NAME } from 'config/general';
+import TAB_IDS from 'utils/constants/tab-ids';
+import { ReactComponent as PolkabtcLogoIcon } from 'assets/img/polkabtc-logo.svg';
+// import { ReactComponent as NewMarkIcon } from 'assets/img/icons/new-mark.svg';
 
 const queryString = require('query-string');
 
@@ -152,7 +153,7 @@ const Topbar = (props: TopbarProps): JSX.Element => {
                     to={{
                       pathname: PAGES.application,
                       search: queryString.stringify({
-                        [QUERY_PARAMETERS.type]: TAB_TYPES.issue
+                        [QUERY_PARAMETERS.tab]: TAB_IDS.issue
                       })
                     }}>
                     {t('app')}
@@ -196,10 +197,10 @@ const Topbar = (props: TopbarProps): JSX.Element => {
                     className='nav-link'
                     to={PAGES.challenges}>
                     {t('nav_challenges')}
-                    <NewMarkIcon
+                    {/* <NewMarkIcon
                       className='inline-block'
                       width={20}
-                      height={20} />
+                      height={20} /> */}
                   </InterlayRouterLink>
                 )}
                 <InterlayRouterLink

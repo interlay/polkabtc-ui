@@ -9,13 +9,12 @@ import Big from 'big.js';
 import { StoreType } from '../../../common/types/util.types';
 import DashboardTable from '../dashboard-table/dashboard-table';
 import { VaultExt } from '@interlay/polkabtc/build/parachain/vaults';
-import InterlayTooltip from 'components/UI/InterlayTooltip';
+import Tooltip from 'components/Tooltip';
 
 export default function VaultTable(): ReactElement {
   const [vaults, setVaults] = useState<Array<Vault>>([]);
   const [vaultsExt, setVaultsExt] = useState<Array<VaultExt>>([]);
   const [liquidationThreshold, setLiquidationThreshold] = useState(new Big(0));
-  const [auctionCollateralThreshold, setAuctionCollateralThreshold] = useState(new Big(0));
   const [secureCollateralThreshold, setSecureCollateralThreshold] = useState(new Big(0));
   const [btcToDotRate, setBtcToDotRate] = useState(new Big(0));
   const { t } = useTranslation();
@@ -27,20 +26,17 @@ export default function VaultTable(): ReactElement {
 
       try {
         const [
-          auction,
           secure,
           liquidation,
           btcToDot,
           vaultsExt
         ] = await Promise.all([
-          window.polkaBTC.vaults.getAuctionCollateralThreshold(),
           window.polkaBTC.vaults.getSecureCollateralThreshold(),
           window.polkaBTC.vaults.getLiquidationCollateralThreshold(),
           window.polkaBTC.oracle.getExchangeRate(),
           window.polkaBTC.vaults.list()
         ]);
 
-        setAuctionCollateralThreshold(auction);
         setSecureCollateralThreshold(secure);
         setLiquidationThreshold(liquidation);
         setBtcToDotRate(btcToDot);
@@ -68,9 +64,6 @@ export default function VaultTable(): ReactElement {
         if (collateralization.lt(liquidationThreshold)) {
           return constants.VAULT_STATUS_LIQUIDATION;
         }
-        if (collateralization.lt(auctionCollateralThreshold)) {
-          return constants.VAULT_STATUS_AUCTION;
-        }
         if (collateralization.lt(secureCollateralThreshold)) {
           return constants.VAULT_STATUS_UNDER_COLLATERALIZED;
         }
@@ -80,7 +73,6 @@ export default function VaultTable(): ReactElement {
       }
       return constants.VAULT_STATUS_ACTIVE;
     }, [
-      auctionCollateralThreshold,
       liquidationThreshold,
       secureCollateralThreshold,
       t
@@ -149,15 +141,15 @@ export default function VaultTable(): ReactElement {
     <h1 key={3}>{t('locked_btc')}</h1>,
     <>
       <h1>{t('pending_btc')}</h1> &nbsp;
-      <InterlayTooltip overlay={t('vault.tip_pending_btc')}>
+      <Tooltip overlay={t('vault.tip_pending_btc')}>
         <i className='far fa-question-circle' />
-      </InterlayTooltip>
+      </Tooltip>
     </>,
     <>
       <h1>{t('collateralization')}</h1> &nbsp;
-      <InterlayTooltip overlay={t('vault.tip_collateralization')}>
+      <Tooltip overlay={t('vault.tip_collateralization')}>
         <i className='far fa-question-circle' />
-      </InterlayTooltip>
+      </Tooltip>
     </>,
     <h1 key={4}>{t('status')}</h1>
   ];
@@ -184,9 +176,6 @@ export default function VaultTable(): ReactElement {
       if (typeof collateralization !== 'undefined') {
         if (new Big(collateralization).gte(secureCollateralThreshold)) {
           return 'green-text';
-        }
-        if (new Big(collateralization).gte(auctionCollateralThreshold)) {
-          return 'orange-text';
         }
         // Liquidation
         return 'red-text';
@@ -229,7 +218,7 @@ export default function VaultTable(): ReactElement {
         {vault.status}
       </p>
     ];
-  }, [auctionCollateralThreshold, secureCollateralThreshold, t]);
+  }, [secureCollateralThreshold, t]);
 
   return (
     <div style={{ margin: '40px 0px' }}>

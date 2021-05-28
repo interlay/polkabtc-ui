@@ -2,23 +2,7 @@
 import * as React from 'react';
 import clsx from 'clsx';
 
-const TAB_ITEMS = [
-  {
-    id: 'tab1',
-    label: 'Tab1'
-  },
-  {
-    id: 'tab2',
-    label: 'Tab2'
-  },
-  {
-    id: 'tab3',
-    label: 'Tab3'
-  }
-];
-
 interface TabProps {
-  selected: boolean;
   id: string;
   children: React.ReactNode;
   onSelect: () => void;
@@ -27,13 +11,12 @@ interface TabProps {
 }
 
 const Tab = ({
-  selected,
   id,
   children,
   onSelect,
   listClassName,
   anchorClassName
-}: TabProps) => {
+}: TabProps): JSX.Element => {
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     onSelect();
@@ -47,14 +30,7 @@ const Tab = ({
       )}>
       <a
         className={clsx(
-          'text-xs',
-          'font-medium',
-          'px-4',
-          'py-2',
           'block',
-          selected ?
-            'text-white bg-pink-600' :
-            'text-pink-600 bg-white',
           anchorClassName
         )}
         href={`#${id}`}
@@ -77,64 +53,31 @@ const TabPanel = ({
   id,
   index,
   selectedIndex,
-  className,
   ...rest
-}: TabPanelProps & React.ComponentPropsWithRef<'div'>) => (
-  <div
-    id={id}
-    className={clsx(
-      selectedIndex === index ? 'block' : 'hidden',
-      className
-    )}
-    {...rest} />
-);
-
-// TODO: not used for now
-const Tabs = ({
-  className,
-  ...rest
-}: React.ComponentPropsWithRef<'ul'>): JSX.Element => {
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+}: TabPanelProps & React.ComponentPropsWithRef<'div'>): JSX.Element | null => {
+  const selected = selectedIndex === index;
+  if (!selected) return null;
 
   return (
-    <>
-      <ul
-        className={clsx(
-          'flex',
-          className
-        )}
-        role='tablist'
-        {...rest}>
-        {TAB_ITEMS.map((tabItem, index) => (
-          <Tab
-            key={tabItem.id}
-            id={tabItem.id}
-            selected={index === selectedIndex}
-            onSelect={() => setSelectedIndex(index)}>
-            {tabItem.label}
-          </Tab>
-        ))}
-      </ul>
-      <TabPanel
-        index={0}
-        selectedIndex={selectedIndex}
-        id='tab1'>
-        Tab1
-      </TabPanel>
-      <TabPanel
-        index={1}
-        selectedIndex={selectedIndex}
-        id='tab2'>
-        Tab2
-      </TabPanel>
-      <TabPanel
-        index={2}
-        selectedIndex={selectedIndex}
-        id='tab3'>
-        Tab3
-      </TabPanel>
-    </>
+    <div
+      id={id}
+      {...rest} />
   );
+};
+
+const Tabs = (props: TabsProps): JSX.Element => {
+  return (
+    <ul
+      role='tablist'
+      {...props} />
+  );
+};
+
+export type TabsProps = React.ComponentPropsWithRef<'ul'>;
+
+export {
+  Tab,
+  TabPanel
 };
 
 export default Tabs;

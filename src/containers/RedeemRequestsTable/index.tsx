@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { BtcNetworkName } from '@interlay/polkabtc-stats';
 
 import EllipsisLoader from 'components/EllipsisLoader';
-import ErrorMessage from 'components/ErrorMessage';
+import ErrorHandler from 'components/ErrorHandler';
 import Pagination from 'components/Pagination';
 import InterlayTable, {
   InterlayTableContainer,
@@ -30,7 +30,7 @@ import {
 } from 'common/utils/utils';
 import { DashboardRequestInfo } from 'common/types/redeem.types';
 import { QUERY_PARAMETERS } from 'utils/constants/links';
-import { BTC_ADDRESS_API } from 'config/blockchain';
+import { BTC_ADDRESS_API } from 'config/bitcoin';
 import * as constants from '../../constants';
 import STATUSES from 'utils/constants/statuses';
 
@@ -92,7 +92,7 @@ const RedeemRequestsTable = ({
         Cell: function FormattedCell({ value }) {
           return (
             <>
-              {formatDateTimePrecise(new Date(value))}
+              {formatDateTimePrecise(new Date(Number(value)))}
             </>
           );
         }
@@ -183,9 +183,9 @@ const RedeemRequestsTable = ({
     }
   );
 
-  if (status === STATUSES.REJECTED) {
+  if (status === STATUSES.REJECTED && error) {
     return (
-      <ErrorMessage message={error?.message} />
+      <ErrorHandler error={error} />
     );
   }
 

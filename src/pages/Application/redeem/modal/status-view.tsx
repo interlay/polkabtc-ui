@@ -3,12 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { RedeemRequest, RedeemRequestStatus } from '../../../../common/types/redeem.types';
 import BitcoinTransaction from '../../../../common/components/bitcoin-links/transaction';
 import { getUsdAmount, shortAddress } from '../../../../common/utils/utils';
-import { BTC_TRANSACTION_API } from 'config/blockchain';
+import { BTC_TRANSACTION_API } from 'config/bitcoin';
 import { useSelector } from 'react-redux';
 import { StoreType } from '../../../../common/types/util.types';
 import Big from 'big.js';
 import { ReactComponent as PolkadotLogoIcon } from 'assets/img/polkadot-logo.svg';
 import InterlayLink from 'components/UI/InterlayLink';
+import Timer from 'components/Timer';
+import clsx from 'clsx';
+import { BLOCK_TIME } from 'config/parachain';
 
 type StatusViewProps = {
   request: RedeemRequest;
@@ -21,16 +24,18 @@ export default function StatusView(props: StatusViewProps): ReactElement {
   const [punishmentDOT, setPunishmentDOT] = useState(new Big(0));
   const [burnAmountDOT, setBurnAmountDOT] = useState(new Big(0));
   const [amountDOT, setAmountDOT] = useState(new Big(0));
+  const [initialLeftSeconds, setInitialLeftSeconds] = React.useState<number>();
 
   useEffect(() => {
     if (!polkaBtcLoaded) return;
 
     const fetchData = async () => {
       try {
-        const [punishment, btcDotRate, btcConfs] = await Promise.all([
+        const [punishment, btcDotRate, btcConfs, redeemPeriod] = await Promise.all([
           window.polkaBTC.vaults.getPunishmentFee(),
           window.polkaBTC.oracle.getExchangeRate(),
-          window.polkaBTC.btcRelay.getStableBitcoinConfirmations()
+          window.polkaBTC.btcRelay.getStableBitcoinConfirmations(),
+          window.polkaBTC.redeem.getRedeemPeriod()
         ]);
         const amountPolkaBTC = props.request ? new Big(props.request.amountPolkaBTC) : new Big(0);
         const burned = amountPolkaBTC.mul(btcDotRate);
@@ -39,6 +44,10 @@ export default function StatusView(props: StatusViewProps): ReactElement {
         setPunishmentDOT(punished);
         setAmountDOT(burned.add(punished));
         setStableBitcoinConfirmations(btcConfs);
+
+        const requestTimestamp = Math.floor(new Date(Number(props.request.timestamp)).getTime() / 1000);
+        const theInitialLeftSeconds = requestTimestamp + (redeemPeriod * BLOCK_TIME) - Math.floor(Date.now() / 1000);
+        setInitialLeftSeconds(theInitialLeftSeconds);
       } catch (error) {
         console.log(error);
       }
@@ -107,6 +116,18 @@ export default function StatusView(props: StatusViewProps): ReactElement {
       return (
         <React.Fragment>
           <div className='status-title'>{t('pending')}</div>
+          <p
+            className={clsx(
+              'flex',
+              'justify-center',
+              'items-center',
+              'space-x-1'
+            )}>
+            <span className='text-textSecondary'>
+              {t('redeem_page.vault_has_time_to_complete')}
+            </span>
+            {initialLeftSeconds && <Timer initialLeftSeconds={initialLeftSeconds} />}
+          </p>
           <div className='row mt-5'>
             <div className='col'>
               <div className='pending-circle'>
@@ -249,13 +270,13 @@ export default function StatusView(props: StatusViewProps): ReactElement {
               </InterlayLink>
             </div>
           </div>
-          <div className='row justify-content-center'>
+          <div className='row justify-center'>
             <div className='col-9 note-title'>
               {t('note')}&nbsp;
               <i className='fas fa-exclamation-circle'></i>
             </div>
           </div>
-          <div className='row justify-content-center'>
+          <div className='row justify-center'>
             <div className='col-9 note-text'>{t('redeem_page.retry_new_redeem')}</div>
           </div>
         </React.Fragment>

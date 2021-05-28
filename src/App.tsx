@@ -23,19 +23,16 @@ import {
 import keyring from '@polkadot/ui-keyring';
 import {
   FaucetClient,
-  satToBTC,
   createPolkabtcAPI,
   PolkaBTCAPI
 } from '@interlay/polkabtc';
 import { StatusCode } from '@interlay/polkabtc/build/interfaces';
-import Big from 'big.js';
 
 import Layout from 'parts/Layout';
 import Application from 'pages/Application';
 import Dashboard from 'pages/dashboard/dashboard.page';
 import VaultDashboard from 'pages/vault-dashboard/vault-dashboard.page';
 import StakedRelayer from 'pages/staked-relayer/staked-relayer.page';
-import Challenges from 'pages/Challenges';
 import VaultsDashboard from 'pages/dashboard/vaults/vaults.dashboard.page';
 import IssueRequests from 'pages/dashboard/IssueRequests';
 import RedeemRequests from 'pages/dashboard/RedeemRequests';
@@ -43,7 +40,6 @@ import LandingPage from 'pages/landing/landing.page';
 import RelayDashboard from 'pages/dashboard/relay/relay.dashboard.page';
 import OraclesDashboard from 'pages/dashboard/oracles/oracles.dashboard.page';
 import ParachainDashboard from 'pages/dashboard/parachain/parachain.dashboard.page';
-import Feedback from 'pages/Feedback';
 // TODO: block for now
 // import TransitionWrapper from 'parts/TransitionWrapper';
 
@@ -70,7 +66,11 @@ import {
 // TODO: should clean up and move to scss
 import './_general.scss';
 import 'react-toastify/dist/ReactToastify.css';
-import { ACCOUNT_ID_TYPE_NAME } from './constants';
+import { ACCOUNT_ID_TYPE_NAME } from 'config/general';
+import {
+  displayBtcAmount,
+  displayDotAmount
+} from 'common/utils/utils';
 
 // TODO: block code-splitting for now
 // const Application = React.lazy(() =>
@@ -85,9 +85,9 @@ import { ACCOUNT_ID_TYPE_NAME } from './constants';
 // const StakedRelayerPage = React.lazy(() =>
 //   import(/* webpackChunkName: 'staked-relayer' */ 'pages/staked-relayer/staked-relayer.page')
 // );
-// const Challenges = React.lazy(() =>
-//   import(/* webpackChunkName: 'challenges' */ 'pages/Challenges')
-// );
+const Challenges = React.lazy(() =>
+  import(/* webpackChunkName: 'challenges' */ 'pages/Challenges')
+);
 // const VaultsDashboard = React.lazy(() =>
 //   import(/* webpackChunkName: 'vaults' */ 'pages/dashboard/vaults/vaults.dashboard.page')
 // );
@@ -109,9 +109,12 @@ import { ACCOUNT_ID_TYPE_NAME } from './constants';
 // const ParachainDashboard = React.lazy(() =>
 //   import(/* webpackChunkName: 'parachain' */ 'pages/dashboard/parachain/parachain.dashboard.page')
 // );
-// const Feedback = React.lazy(() =>
-//   import(/* webpackChunkName: 'feedback' */ 'pages/Feedback')
-// );
+const Feedback = React.lazy(() =>
+  import(/* webpackChunkName: 'feedback' */ 'pages/Feedback')
+);
+const NoMatch = React.lazy(() =>
+  import(/* webpackChunkName: 'no-match' */ 'pages/NoMatch')
+);
 
 function connectToParachain(): Promise<PolkaBTCAPI> {
   return createPolkabtcAPI(
@@ -186,14 +189,8 @@ function App(): JSX.Element {
     (async () => {
       try {
         dispatch(isStakedRelayerLoaded(false));
-        const [
-          isActive,
-          isInactive
-        ] = await Promise.all([
-          window.polkaBTC.stakedRelayer.isStakedRelayerActive(id),
-          window.polkaBTC.stakedRelayer.isStakedRelayerInactive(id)
-        ]);
-        dispatch(isStakedRelayerLoaded(isActive || isInactive));
+        const stakedRelayers = await window.polkaBTC.stakedRelayer.list();
+        dispatch(isStakedRelayerLoaded(stakedRelayers.includes(id)));
       } catch (error) {
         // TODO: should add error handling
         console.log('No PolkaBTC staked relayer found for the account in the connected Polkadot wallet.');
@@ -215,19 +212,18 @@ function App(): JSX.Element {
     (async () => {
       try {
         const [
-          totalPolkaSAT,
+          totalPolkaBTC,
           totalLockedDOT,
           btcRelayHeight,
           bitcoinHeight,
           state
         ] = await Promise.all([
-          window.polkaBTC.treasury.totalPolkaBTC(),
+          window.polkaBTC.treasury.total(),
           window.polkaBTC.collateral.totalLocked(),
           window.polkaBTC.btcRelay.getLatestBlockHeight(),
-          window.polkaBTC.btcCore.getLatestBlockHeight(),
+          window.polkaBTC.electrsAPI.getLatestBlockHeight(),
           window.polkaBTC.stakedRelayer.getCurrentStateOfBTCParachain()
         ]);
-        const totalPolkaBTC = new Big(satToBTC(totalPolkaSAT.toString())).round(3).toString();
 
         const parachainStatus = (state: StatusCode) => {
           if (state.isError) {
@@ -243,8 +239,8 @@ function App(): JSX.Element {
 
         dispatch(
           initGeneralDataAction(
-            totalPolkaBTC,
-            totalLockedDOT.round(3).toString(),
+            displayBtcAmount(totalPolkaBTC),
+            displayDotAmount(totalLockedDOT),
             Number(btcRelayHeight),
             bitcoinHeight,
             parachainStatus(state)
@@ -401,6 +397,9 @@ function App(): JSX.Element {
                       path={PAGES.home}
                       exact>
                       <LandingPage />
+                    </Route>
+                    <Route path='*'>
+                      <NoMatch />
                     </Route>
                   </Switch>
                 </React.Suspense>

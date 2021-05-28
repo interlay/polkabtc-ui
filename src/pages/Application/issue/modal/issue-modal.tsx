@@ -1,24 +1,31 @@
 
-import { ReactElement } from 'react';
+// ray test touch <
 import { useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import Big from 'big.js';
+import clsx from 'clsx';
 
-import PaymentView from './payment-view';
+import PaymentView from './PaymentView';
 import StatusView from './status-view';
 import WhoopsView from './whoops-view';
-import { getUsdAmount, shortAddress } from 'common/utils/utils';
+import {
+  displayBtcAmount,
+  getUsdAmount,
+  shortAddress
+} from 'common/utils/utils';
 import { StoreType } from 'common/types/util.types';
-import { IssueRequestStatus, IssueRequest } from 'common/types/issue.types';
+import {
+  IssueRequestStatus,
+  IssueRequest
+} from 'common/types/issue.types';
 import { ReactComponent as BitcoinLogoIcon } from 'assets/img/bitcoin-logo.svg';
 
 type IssueModalProps = {
-  show: boolean;
+  open: boolean;
   onClose: () => void;
 };
 
-function IssueModal(props: IssueModalProps): ReactElement {
+const IssueModal = (props: IssueModalProps): JSX.Element => {
   const { address, prices } = useSelector((state: StoreType) => state.general);
   const selectedIdRequest = useSelector((state: StoreType) => state.issue.id);
   const userIssueRequests = useSelector((state: StoreType) => state.issue.issueRequests).get(address) || [];
@@ -42,22 +49,32 @@ function IssueModal(props: IssueModalProps): ReactElement {
   return (
     <Modal
       className='issue-modal'
-      show={props.show}
+      show={props.open}
       onHide={props.onClose}
       size='xl'>
       {request && (
         <>
-          <div className='issue-modal-title'>
+          <h4
+            className={clsx(
+              'break-words',
+              'font-medium',
+              'text-base',
+              'text-interlayRose',
+              'text-center',
+              'uppercase'
+            )}>
             {t('issue_page.request', { id: request.id })}
-          </div>
+          </h4>
+          {/* ray test touch < */}
           {/* TODO: could be a component */}
           <i
             className='fas fa-times close-icon'
             onClick={props.onClose} />
+          {/* ray test touch > */}
           <div className='issue-modal-horizontal-line' />
           <Modal.Body>
             <div className='row'>
-              <div className='col-xl-6 col-lg-12 justify-content-center'>
+              <div className='col-xl-6 col-lg-12 justify-center'>
                 <div className='issue-amount'>
                   <span className='wizard-number'>
                     {request.issuedAmountBtc || request.requestedAmountPolkaBTC}
@@ -81,7 +98,7 @@ function IssueModal(props: IssueModalProps): ReactElement {
                       height={23} />
                     {' '}
                     &nbsp;
-                    {parseFloat(Number(request.fee).toFixed(5))} BTC
+                    {displayBtcAmount(request.fee)} BTC
                     <div className='send-price'>
                       {'~ $' + getUsdAmount(request.fee, prices.bitcoin.usd)}
                     </div>
@@ -97,14 +114,7 @@ function IssueModal(props: IssueModalProps): ReactElement {
                       height={23} />
                     {' '}
                     &nbsp;
-                    {parseFloat(
-                      new Big(request.fee)
-                        .add(
-                          new Big(request.issuedAmountBtc || request.requestedAmountPolkaBTC)
-                        )
-                        .round(5)
-                        .toString()
-                    )}
+                    {displayBtcAmount(request.amountBTC)}
                     {' '}
                     BTC
                     <div className='send-price'>
@@ -125,17 +135,17 @@ function IssueModal(props: IssueModalProps): ReactElement {
                   <div className='col-6 right-text'>{request.creation}</div>
                 </div>
                 <div className='step-item row'>
-                  <div className='col-6 temp-text-left'>{t('issue_page.vault_dot_address_modal')}</div>
+                  <div className='col-6 temp-text-left'>{t('issue_page.vault_dot_address')}</div>
                   <div className='col-6 right-text'>{shortAddress(request.vaultDOTAddress)}</div>
                 </div>
                 <div className='step-item row'>
                   <div className='col-6 temp-text-left'>{t('issue_page.vault_btc_address')}</div>
                   <div className='col-6 right-text'>{shortAddress(request.vaultBTCAddress)}</div>
                 </div>
-                <div className='row justify-content-center mt-3'>
+                <div className='row justify-center mt-3'>
                   <div className='col-9 note-title'>{t('note')}:</div>
                 </div>
-                <div className='row justify-content-center'>
+                <div className='row justify-center'>
                   <div className='col-9 note-text'>{t('issue_page.fully_decentralized')}</div>
                 </div>
               </div>
@@ -146,6 +156,7 @@ function IssueModal(props: IssueModalProps): ReactElement {
       )}
     </Modal>
   );
-}
+};
 
 export default IssueModal;
+// ray test touch >
