@@ -21,7 +21,7 @@ interface Props {
   request: IssueRequest;
 }
 
-const PaymentView = ({
+const BTCPaymentPendingStatus = ({
   request
 }: Props): JSX.Element => {
   const { t } = useTranslation();
@@ -42,7 +42,9 @@ const PaymentView = ({
   ]);
 
   return (
-    <div className='space-y-8'>
+    <div
+      id='BTCPaymentPendingStatus'
+      className='space-y-8'>
       <div
         className={clsx(
           'flex',
@@ -95,7 +97,13 @@ const PaymentView = ({
             'items-center',
             'space-x-1'
           )}>
-          <span className='text-textSecondary'>{t('issue_page.within')}</span>
+          <span
+            className={clsx(
+              'text-textSecondary',
+              'capitalize'
+            )}>
+            {t('issue_page.within')}
+          </span>
           {initialLeftSeconds && <Timer initialLeftSeconds={initialLeftSeconds} />}
         </p>
       </div>
@@ -135,4 +143,4 @@ const PaymentView = ({
   );
 };
 
-export default PaymentView;
+export default BTCPaymentPendingStatus;

@@ -1,32 +1,48 @@
-import React, { ReactElement, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { IssueRequest, IssueRequestStatus } from '../../../../common/types/issue.types';
-import BitcoinTransaction from '../../../../common/components/bitcoin-links/transaction';
-import ButtonMaybePending from '../../../../common/components/pending-button';
-import { useDispatch, useSelector } from 'react-redux';
-import { StoreType } from '../../../../common/types/util.types';
-import { toast } from 'react-toastify';
-import { updateIssueRequestAction } from '../../../../common/actions/issue.actions';
-import { updateBalancePolkaBTCAction } from '../../../../common/actions/general.actions';
-import { shortAddress } from '../../../../common/utils/utils';
-import Big from 'big.js';
-import InterlayLink from 'components/UI/InterlayLink';
-import { BTC_TRANSACTION_API } from 'config/bitcoin';
 
-type StatusViewProps = {
+import * as React from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux';
+import { toast } from 'react-toastify';
+import Big from 'big.js';
+
+// ray test touch <<
+// import CompletedIssueRequest from './CompletedIssueRequest';
+import CancelledIssueRequest from './CancelledIssueRequest';
+// ray test touch >>
+import ButtonMaybePending from 'common/components/pending-button';
+import InterlayLink from 'components/UI/InterlayLink';
+import BitcoinTransaction from 'common/components/bitcoin-links/transaction';
+import { shortAddress } from 'common/utils/utils';
+import { BTC_TRANSACTION_API } from 'config/bitcoin';
+import {
+  IssueRequest,
+  IssueRequestStatus
+} from 'common/types/issue.types';
+import { StoreType } from 'common/types/util.types';
+import { updateIssueRequestAction } from 'common/actions/issue.actions';
+import { updateBalancePolkaBTCAction } from 'common/actions/general.actions';
+
+type Props = {
   request: IssueRequest;
 };
 
-export default function StatusView(props: StatusViewProps): ReactElement {
+const IssueRequestStatusUI = (props: Props): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { polkaBtcLoaded, balancePolkaBTC } = useSelector((state: StoreType) => state.general);
-  const [stableBitcoinConfirmations, setStableBitcoinConfirmations] = useState(1);
-  const [stableParachainConfirmations, setStableParachainConfirmations] = useState(100);
-  const [requestConfirmations, setRequestConfirmations] = useState(0);
-  const [executePending, setExecutePending] = useState(false);
+  const {
+    polkaBtcLoaded,
+    balancePolkaBTC
+  } = useSelector((state: StoreType) => state.general);
+  const [stableBitcoinConfirmations, setStableBitcoinConfirmations] = React.useState(1);
+  const [stableParachainConfirmations, setStableParachainConfirmations] = React.useState(100);
+  const [requestConfirmations, setRequestConfirmations] = React.useState(0);
+  const [executePending, setExecutePending] = React.useState(false);
 
-  useEffect(() => {
+  // TODO: should be executed on mount event
+  React.useEffect(() => {
     const fetchData = async () => {
       const [btcConf, paraConf, paraHeight] = await Promise.all([
         await window.polkaBTC.btcRelay.getStableBitcoinConfirmations(),
@@ -74,86 +90,14 @@ export default function StatusView(props: StatusViewProps): ReactElement {
     // IssueRequestStatus.PendingWithBtcTxNotFound
     switch (status) {
     case IssueRequestStatus.Completed:
-      return (
-        <>
-          <div className='completed-status-title'>{t('completed')}</div>
-          <div className='row'>
-            <div className='col text-center bold-text '>
-              {t('issue_page.you_received')}{' '}
-              <span className='pink-amount bold-text'>
-                {props.request.issuedAmountBtc || props.request.requestedAmountPolkaBTC} PolkaBTC
-              </span>
-            </div>
-          </div>
-          <div className='row mt-4'>
-            <div className='col'>
-              <div className='completed-confirmations-circle'>
-                <div>{t('issue_page.in_parachain_block')}</div>
-                <div className='number-of-confirmations '>{props.request.creation}</div>
-              </div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col text-center mt-4'>
-              <InterlayLink
-                href='https://polkadot.js.org/apps/#/explorer'
-                target='_blank'
-                rel='noopener noreferrer'>
-                <button className='modal-btn-green'>{t('issue_page.view_parachain_block')}</button>
-              </InterlayLink>
-            </div>
-          </div>
-
-          <div className='row btc-transaction-wrapper'>
-            <div className='col'>
-              <div className='btc-transaction-title'>{t('issue_page.btc_transaction')}</div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='btc-transaction-id'>{shortAddress(props.request.btcTxId)}</div>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col'>
-              <div className='btc-transaction'>
-                <InterlayLink
-                  href={BTC_TRANSACTION_API + props.request.btcTxId}
-                  target='_blank'
-                  rel='noopener noreferrer'>
-                  <button className='modal-btn-green'>
-                    {t('issue_page.view_on_block_explorer')}
-                  </button>
-                </InterlayLink>
-              </div>
-            </div>
-          </div>
-        </>
-      );
+      // ray test touch <<
+      // return <CompletedIssueRequest request={props.request} />;
+      // rya test touch >>
     case IssueRequestStatus.Cancelled:
     case IssueRequestStatus.Expired:
-      return (
-        <>
-          <div className='cancel-status-title'>{t('cancelled')}</div>
-          <div className='row'>
-            <div className='col text-center'>
-              <i className='fas fa-times-circle canceled-circle'></i>
-            </div>
-          </div>
-          <div className='row justify-center mt-4'>
-            <div className='col-9 status-description'>{t('issue_page.you_did_not_send')}</div>
-          </div>
-          <div className='row justify-center mt-5'>
-            <div className='col-9 note-title'>
-              {t('note')}&nbsp;
-              <i className='fas fa-exclamation-circle'></i>
-            </div>
-          </div>
-          <div className='row justify-center'>
-            <div className='col-9 note-text'>{t('issue_page.contact_team')}</div>
-          </div>
-        </>
-      );
+      // ray test touch <<
+      return <CancelledIssueRequest />;
+      // ray test touch >>
     case IssueRequestStatus.PendingWithBtcTxNotIncluded:
     case IssueRequestStatus.PendingWithTooFewConfirmations:
       return (
@@ -266,4 +210,6 @@ export default function StatusView(props: StatusViewProps): ReactElement {
   }
 
   return <div className='status-view'>{getStatus(props.request.status)}</div>;
-}
+};
+
+export default IssueRequestStatusUI;
