@@ -8,15 +8,14 @@ import {
   useSelector,
   useDispatch
 } from 'react-redux';
-import {
-  planckToDOT
-} from '@interlay/polkabtc';
+import clsx from 'clsx';
+import Big from 'big.js';
 import { useTranslation } from 'react-i18next';
+import { planckToDOT } from '@interlay/polkabtc';
 import {
   IssueColumns,
   RedeemColumns
 } from '@interlay/polkabtc-stats';
-import clsx from 'clsx';
 
 import MainContainer from 'parts/MainContainer';
 import PageTitle from 'parts/PageTitle';
@@ -66,7 +65,7 @@ function VaultDashboard(): JSX.Element {
     sla,
     apy
   } = useSelector((state: StoreType) => state.vault);
-  const [capacity, setCapacity] = useState('0');
+  const [capacity, setCapacity] = useState(new Big(0));
   const [feesEarnedPolkaBTC, setFeesEarnedPolkaBTC] = useState('0');
   const [feesEarnedDOT, setFeesEarnedDOT] = useState('0');
   const [totalIssueRequests, setTotalIssueRequests] = useState(0);
@@ -95,7 +94,7 @@ function VaultDashboard(): JSX.Element {
           collateralization,
           slaScore,
           apyScore,
-          issuablePolkaBTC,
+          issuableAmount,
           totalIssueRequests,
           totalRedeemRequests
         ] = await Promise.allSettled([
@@ -106,7 +105,7 @@ function VaultDashboard(): JSX.Element {
           window.polkaBTC.vaults.getVaultCollateralization(vaultId),
           window.polkaBTC.vaults.getSLA(vaultId),
           window.polkaBTC.vaults.getAPY(vaultId),
-          window.polkaBTC.vaults.getIssuablePolkaBTC(),
+          window.polkaBTC.vaults.getIssuableAmount(vaultId),
           stats.getFilteredTotalIssues([{ column: IssueColumns.VaultId, value: address }]),
           stats.getFilteredTotalRedeems([{ column: RedeemColumns.VaultId, value: address }])
         ]);
@@ -148,8 +147,8 @@ function VaultDashboard(): JSX.Element {
           dispatch(updateAPYAction(apyScore.value));
         }
 
-        if (issuablePolkaBTC.status === 'fulfilled') {
-          setCapacity(issuablePolkaBTC.value);
+        if (issuableAmount.status === 'fulfilled') {
+          setCapacity(issuableAmount.value);
         }
       } catch (error) {
         console.log('[VaultDashboard useEffect] error.message => ', error.message);
