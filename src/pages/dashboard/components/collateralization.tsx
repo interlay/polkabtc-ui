@@ -85,15 +85,16 @@ export default function Collateralization({ linkButton }: CollateralizationProps
       </div>
       <div
         className={clsx(
-          'm-auto',
+          'mx-auto',
           'w-60',
           'h-60',
           'rounded-full',
+          'flex',
           'justify-content',
           'items-center',
           'border-2',
-          'border-interlayDodgerBlue')}
-        id='relay-circle'>
+          'border-interlayDodgerBlue'
+        )}>
         <h1
           className={clsx(
             'h1-xl',
@@ -101,13 +102,18 @@ export default function Collateralization({ linkButton }: CollateralizationProps
             'text-interlayDodgerBlue',
             'text-center'
           )}>
-          {failed ? t('no_data') :
-            [
-              issuablePolkaBTC === '0' ? t('loading') : safeRoundTwoDecimals(issuablePolkaBTC) + ' PolkaBTC',
-              // eslint-disable-next-line react/jsx-key
-              <br />, t('dashboard.vault.capacity')
-            ]
-          }
+          {failed ? (
+            <>{t('no_data')}</>
+          ) : (
+            issuablePolkaBTC === '0' ? (
+              <>{t('loading')}</>
+            ) : (
+              <>
+                <span className='inline-block'>{`${safeRoundTwoDecimals(issuablePolkaBTC)} PolkaBTC`}</span>
+                <span className='inline-block'>{t('dashboard.vault.capacity')}</span>
+              </>
+            )
+          )}
         </h1>
       </div>
     </DashboardCard>
