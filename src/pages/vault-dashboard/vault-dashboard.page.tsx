@@ -3,7 +3,6 @@ import {
   useState,
   useEffect
 } from 'react';
-import { Button } from 'react-bootstrap';
 import {
   useSelector,
   useDispatch
@@ -28,6 +27,7 @@ import CardList, {
   CardListContainer
 } from 'components/CardList';
 import BoldParagraph from 'components/BoldParagraph';
+import InterlayButton from 'components/UI/InterlayButton';
 import UpdateCollateralModal, { CollateralUpdateStatus } from './update-collateral/update-collateral';
 import RequestReplacementModal from './request-replacement/request-replacement';
 import ReplaceTable from './replace-table/replace-table';
@@ -244,17 +244,38 @@ function VaultDashboard(): JSX.Element {
               'grid-cols-2',
               'gap-10'
             )}>
-            <Button
-              variant='outline-success'
+            <InterlayButton
+              type='submit'
+              style={{ display: 'flex' }}
+              className='mx-auto'
+              variant='contained'
+              color='primary'
               // TODO: should not use inlined functions
               onClick={() => setUpdateCollateralModalStatus(CollateralUpdateStatus.Increase)}>
               {t('vault.deposit_collateral')}
-            </Button>
-            <Button
-              variant='outline-danger'
+            </InterlayButton>
+            <InterlayButton
+              type='submit'
+              style={{ display: 'flex' }}
+              className='mx-auto'
+              variant='contained'
+              color='default'
               onClick={() => setUpdateCollateralModalStatus(CollateralUpdateStatus.Decrease)}>
               {t('vault.withdraw_collateral')}
-            </Button>
+            </InterlayButton>
+            {new Big(lockedBTC).gt(new Big(0)) ? (
+              <InterlayButton
+                type='submit'
+                style={{ display: 'flex' }}
+                className='mx-auto'
+                variant='contained'
+                color='secondary'
+                onClick={() => setShowRequestReplacementModal(true)}>
+                {t('vault.replace_vault')}
+              </InterlayButton>
+            ) : (
+              ''
+            )}
           </div>
         </div>
         <div className='text-center'>
@@ -264,7 +285,7 @@ function VaultDashboard(): JSX.Element {
           <VaultRedeemRequestsTable
             totalRedeemRequests={totalRedeemRequests}
             vaultAddress={address} />
-          <ReplaceTable openModal={setShowRequestReplacementModal} />
+          <ReplaceTable />
           <UpdateCollateralModal
             onClose={closeUpdateCollateralModal}
             status={updateCollateralModalStatus} />
